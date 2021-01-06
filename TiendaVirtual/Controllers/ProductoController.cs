@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using TiendaVirtual.Models;
 
@@ -19,24 +15,28 @@ namespace TiendaVirtual.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        public IHttpActionResult GetProductoById(int id) {
+        public IHttpActionResult GetProductoById(int id)
+        {
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION FROM PRODUCTO WHERE PRO_ID=@ID;", sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("@ID",id);
+                    sqlCommand.Parameters.AddWithValue("@ID", id);
                     sqlConnection.Open();
                     Producto producto = new Producto();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                    while (sqlDataReader.Read()) {
-                        producto = new Producto {
-                            PRO_ID=sqlDataReader.GetInt32(0),
-                            PRO_NOMBRE=sqlDataReader.GetString(1),
-                            PRO_MARCA=sqlDataReader.GetString(2),
-                            PRO_STOCK=sqlDataReader.GetInt32(3),
-                            PRO_PRECIO=sqlDataReader.GetDecimal(4),
-                            PRO_DESCRIPCION=sqlDataReader.GetString(5)
+                    while (sqlDataReader.Read())
+                    {
+                        producto = new Producto
+                        {
+                            PRO_ID = sqlDataReader.GetInt32(0),
+                            PRO_NOMBRE = sqlDataReader.GetString(1),
+                            PRO_MARCA = sqlDataReader.GetString(2),
+                            PRO_STOCK = sqlDataReader.GetInt32(3),
+                            PRO_PRECIO = sqlDataReader.GetDecimal(4),
+                            PRO_DESCRIPCION = sqlDataReader.GetString(5)
                         };
                     }
                     sqlConnection.Close();
@@ -44,16 +44,17 @@ namespace TiendaVirtual.Controllers
                     else { return Ok(producto); }
                 }
             }
-            catch {
+            catch
+            {
                 return InternalServerError();
-                }
+            }
 
         }
         [AllowAnonymous]
         [HttpGet]
         public IHttpActionResult GetAllProductos()
         {
-            
+
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
@@ -88,14 +89,17 @@ namespace TiendaVirtual.Controllers
         [HttpPost]
         [AllowAnonymous]//Authorize
         [Route("ingresar")]
-        public IHttpActionResult PublicInsert(Producto producto) {
+        public IHttpActionResult PublicInsert(Producto producto)
+        {
             if (producto == null) { return BadRequest(); }
             if (PrivateInsert(producto)) { return Ok(producto); }
             else { return InternalServerError(); }
         }
 
-        private bool PrivateInsert(Producto producto) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+        private bool PrivateInsert(Producto producto)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO(PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION) VALUES(@PRO_NOMBRE,@PRO_MARCA,@PRO_STOCK,@PRO_PRECIO,@PRO_DESCRIPCION);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", producto.PRO_NOMBRE);
                 sqlCommand.Parameters.AddWithValue("@PRO_MARCA", producto.PRO_MARCA);
@@ -112,14 +116,17 @@ namespace TiendaVirtual.Controllers
 
         [HttpDelete]
         [AllowAnonymous]//Authorize
-        public IHttpActionResult PublicDelete(int id) {
+        public IHttpActionResult PublicDelete(int id)
+        {
             if (id == 0) { return BadRequest(); }
             if (PrivateDelete(id)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        private bool PrivateDelete(int id) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO WHERE PRO_ID=@ID;",sqlConnection);
+        private bool PrivateDelete(int id)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO WHERE PRO_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
@@ -127,11 +134,12 @@ namespace TiendaVirtual.Controllers
                 if (filasAfectadas > 0) { return true; }
                 else { return false; }
             }
-        
+
         }
         [HttpPut]
         [AllowAnonymous]//Authorize
-        public IHttpActionResult PublicUpdate(Producto producto) {
+        public IHttpActionResult PublicUpdate(Producto producto)
+        {
             if (producto == null) { return BadRequest(); }
             if (PrivateUpdate(producto)) { return Ok(); }
             else { return InternalServerError(); }

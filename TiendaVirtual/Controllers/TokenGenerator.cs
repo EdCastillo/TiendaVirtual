@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Microsoft.IdentityModel.Tokens;
+using System;
 using System.Configuration;
 using System.Security.Claims;
-using Microsoft.IdentityModel.Tokens;
 
 namespace TiendaVirtual.Controllers
 {

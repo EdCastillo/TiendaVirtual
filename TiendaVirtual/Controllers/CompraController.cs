@@ -2,35 +2,36 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using TiendaVirtual.Models;
 
 namespace TiendaVirtual.Controllers
-{           
+{
     [RoutePrefix("api/compra")]
     public class CompraController : ApiController
     {
         [AllowAnonymous]//Authorize
         [HttpGet]
-        public IHttpActionResult GetCompraByID(int id) {
+        public IHttpActionResult GetCompraByID(int id)
+        {
             if (id == 0) { return BadRequest(); }
-            try {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+            try
+            {
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO FROM COMPRA WHERE COM_ID=@ID", sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("@ID",id);
+                    sqlCommand.Parameters.AddWithValue("@ID", id);
                     sqlConnection.Open();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     Compra compra = new Compra();
-                    while (sqlDataReader.Read()) {
+                    while (sqlDataReader.Read())
+                    {
                         compra = new Compra
                         {
-                            COM_ID=sqlDataReader.GetInt32(0),
-                            COM_FECHA_COMPRA=sqlDataReader.GetDateTime(1),
-                            US_ID=sqlDataReader.GetInt32(2),
-                            COM_LUGAR_DE_ENVIO=sqlDataReader.GetString(3)
+                            COM_ID = sqlDataReader.GetInt32(0),
+                            COM_FECHA_COMPRA = sqlDataReader.GetDateTime(1),
+                            US_ID = sqlDataReader.GetInt32(2),
+                            COM_LUGAR_DE_ENVIO = sqlDataReader.GetString(3)
                         };
                     }
                     sqlConnection.Close();
@@ -38,13 +39,14 @@ namespace TiendaVirtual.Controllers
                     else { return Ok(compra); }
                 }
             }
-            catch {
+            catch
+            {
                 return InternalServerError();
             }
         }
 
 
-        
+
         [AllowAnonymous]//Authorize
         [HttpGet]
         [Route("user")]
@@ -71,7 +73,7 @@ namespace TiendaVirtual.Controllers
                         });
                     }
                     sqlConnection.Close();
-                    return Ok(compras); 
+                    return Ok(compras);
                 }
             }
             catch
@@ -82,13 +84,15 @@ namespace TiendaVirtual.Controllers
 
         [HttpPost]
         [Route("ingresar")]
-        public IHttpActionResult PublicIngresar(Compra compra) {
+        public IHttpActionResult PublicIngresar(Compra compra)
+        {
             if (compra == null) { return BadRequest(); }
             if (PrivateIngresar(compra)) { return Ok(); }
             else { return InternalServerError(); }
         }
 
-        private bool PrivateIngresar(Compra compra) {
+        private bool PrivateIngresar(Compra compra)
+        {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO COMPRA(COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO) VALUES(@COM_FECHA_COMPRA,@US_ID,@COM_LUGAR_DE_ENVIO);", sqlConnection);
