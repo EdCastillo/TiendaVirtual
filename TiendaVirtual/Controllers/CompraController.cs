@@ -8,9 +8,10 @@ using TiendaVirtual.Models;
 namespace TiendaVirtual.Controllers
 {
     [RoutePrefix("api/compra")]
+    [Authorize]//Authorize
     public class CompraController : ApiController
     {
-        [AllowAnonymous]//Authorize
+        
         [HttpGet]
         public IHttpActionResult GetCompraByID(int id)
         {
@@ -47,7 +48,7 @@ namespace TiendaVirtual.Controllers
 
 
 
-        [AllowAnonymous]//Authorize
+        
         [HttpGet]
         [Route("user")]
         public IHttpActionResult GetAllComprasByUser(int id)
@@ -96,7 +97,7 @@ namespace TiendaVirtual.Controllers
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO COMPRA(COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO) VALUES(@COM_FECHA_COMPRA,@US_ID,@COM_LUGAR_DE_ENVIO);", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", DateTime.Now);
+                sqlCommand.Parameters.AddWithValue("@COM_FECHA_COMPRA", DateTime.Now);
                 sqlCommand.Parameters.AddWithValue("@US_ID", compra.US_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_LUGAR_DE_ENVIO", compra.COM_LUGAR_DE_ENVIO);
                 sqlConnection.Open();

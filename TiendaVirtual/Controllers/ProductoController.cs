@@ -87,7 +87,7 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]//Authorize
+        [Authorize]//Authorize
         [Route("ingresar")]
         public IHttpActionResult PublicInsert(Producto producto)
         {
@@ -115,7 +115,7 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpDelete]
-        [AllowAnonymous]//Authorize
+        [Authorize]//Authorize
         public IHttpActionResult PublicDelete(int id)
         {
             if (id == 0) { return BadRequest(); }
@@ -137,7 +137,7 @@ namespace TiendaVirtual.Controllers
 
         }
         [HttpPut]
-        [AllowAnonymous]//Authorize
+        [Authorize]//Authorize
         public IHttpActionResult PublicUpdate(Producto producto)
         {
             if (producto == null) { return BadRequest(); }
