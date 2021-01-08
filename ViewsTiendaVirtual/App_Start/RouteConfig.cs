@@ -21,7 +21,13 @@ namespace ViewsTiendaVirtual
                     name: "Default",
                     url: "{controller}/{action}/{id}",
                     defaults: new { action = "Index", id = UrlParameter.Optional }
-                );  
+                );
+            routes.MapRoute(
+                    name: "Acerca",
+                    url: "Acerca",
+                    defaults: new { action = "About", id = UrlParameter.Optional }
+                );
+
         }
     }
 }

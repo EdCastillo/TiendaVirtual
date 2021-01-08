@@ -6,7 +6,7 @@ using System.Web;
 using System.Web.Security;
 using System.Web.UI;
 using System.Web.UI.WebControls;
-using ViewsTiendaVirtual.Controllers;
+using ViewsTiendaVirtual.Managers;
 using ViewsTiendaVirtual.Models;
 
 namespace ViewsTiendaVirtual.Views

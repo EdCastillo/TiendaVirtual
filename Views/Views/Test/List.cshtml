@@ -1,0 +1,62 @@
+﻿@model IEnumerable<Views.Models.Producto>
+
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>List</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_ID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_NOMBRE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_MARCA)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_STOCK)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_PRECIO)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.PRO_DESCRIPCION)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <div class="container p-3 my-3 bg-secondary text-white">
+        <table class="table">
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_ID)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_NOMBRE)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_MARCA)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_STOCK)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_PRECIO)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PRO_DESCRIPCION)
+                </td>
+            </tr>
+        </table>
+    </div>
+}
+
+</table>

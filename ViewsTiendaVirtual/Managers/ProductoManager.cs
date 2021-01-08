@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Web;
 using ViewsTiendaVirtual.Models;
 
-namespace ViewsTiendaVirtual.Controllers
+namespace ViewsTiendaVirtual.Managers
 {
     public class ProductoManager
     {
