@@ -120,9 +120,11 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\CarritoController.cs" />
+    <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
-    <Compile Include="Controllers\TestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -171,13 +173,14 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Producto\AllProducts.cshtml" />
-    <Content Include="Views\Errores\BadRequest.cshtml" />
-    <Content Include="Views\Test\Details.cshtml" />
     <Content Include="Views\Producto\ShowProduct.cshtml" />
-    <Content Include="Views\Test\List.cshtml" />
+    <Content Include="Views\Error\NotFound.cshtml" />
+    <Content Include="Views\Error\BadRequest.cshtml" />
+    <Content Include="Views\Login\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Carrito\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

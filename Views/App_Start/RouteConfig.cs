@@ -12,21 +12,22 @@ namespace Views
         public static void RegisterRoutes(RouteCollection routes)
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
-
             routes.MapRoute(
-                name: "Default",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
-            );
+                name:"Carrito",
+                url:"Carrito/{action}",
+                defaults:new { controller="Carrito"});
             routes.MapRoute(
                 name: "Producto",
                 url: "producto/{action}",
                 defaults: new { controller = "Producto"}
             );
             routes.MapRoute(
-                name: "Test",
-                url: "Test/{action}",
-                defaults: new { controller = "Test" }
+                name:"Error",url:"Error/{action}",
+                defaults:new { controller="Error"}
+            );
+            routes.MapRoute(
+                name: "Login", url: "Login",
+                defaults: new { controller = "Login",action="Login" }
             );
         }
     }

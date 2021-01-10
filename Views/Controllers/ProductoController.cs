@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -32,7 +33,9 @@ namespace Views.Controllers
             {
                 ProductoManager manager = new ProductoManager();
                 Producto product = await manager.ObtenerProducto(id.ToString());
-                return View(product);
+                dynamic products = new ExpandoObject();
+                products.Producto = product;
+                return View(products);
             }
             else {
                 return View(VG.usuarioActual);

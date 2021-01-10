@@ -32,8 +32,6 @@ namespace Views.Managers
                 JsonConvert.DeserializeObject<Usuario>
                 (await response.Content.ReadAsStringAsync());
         }
-
-
         public async Task<Usuario> Registrar(Usuario usuario)
         {
             HttpClient httpClient = new HttpClient();
