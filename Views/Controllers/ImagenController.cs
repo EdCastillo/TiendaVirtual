@@ -6,11 +6,15 @@ using System.Web.Mvc;
 
 namespace Views.Controllers
 {
-    public class HomeController : Controller
+    public class ImagenController : Controller
     {
-        // GET: Home
-        public ActionResult Index()
+        public ActionResult New()
         {
+
+            return View();
+        }
+        public ActionResult Post() {
+
             return View();
         }
     }

@@ -1,4 +1,4 @@
-﻿
+﻿@model Views.Models.PopUp
 @{
     ViewBag.Title = "TV_Login";
     Layout = null;
@@ -12,6 +12,32 @@
     <title>TV Login</title>
 </head>
 <body style="background-color:#E8D0F9">
+    @{
+        if (Html.DisplayFor(model => model.Estado).ToString() == "false")
+        {
+            <script type="text/javascript">
+                $(document).ready(function () {
+                    $("#exampleModalCenter").modal('show');
+                });
+            </script>
+        }
+    }
+    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header text-dark">
+                    <h5 class="modal-title" id="exampleModalLongTitle">@Html.DisplayFor(model => model.Titulo)</h5>
+                </div>
+                <div class="modal-body text-dark">
+                    @Html.DisplayFor(model => model.Body)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Entiendo!</button>
+
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="jumbotron">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <table class="table">
@@ -31,8 +57,57 @@
             </table>
         </nav>
     </div>
-    <div class="container">
+    <div class="container p-3 my-3 bg-dark text-white">
+        <div class="col-12 text-white">
+            <div class="row">
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <div>
+                        <h5 class="display-4 text-white">Iniciar Sesion</h5>
+                        <form>
+                            <div class="form-group">
+                                <label for="exampleInputEmail1">Nombre de Usuario</label>
+                                <input class="form-control" name="usernameTBLogin" runat="server" placeholder="Nombre de Usuario">
 
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1">Contraseña</label>
+                                <input type="password" class="form-control" name="passwordTBLogin" placeholder="Contraseña">
+                            </div>
+                            <div style="margin-top:5px">
+
+                                <button style="width:100%" class="btn btn-primary" onclick="location.href='~/Login/Authenticate'">
+                                    Iniciar Sesion
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-lg-6 col-md-12 col-sm-12">
+                    <h5 class="display-4 text-white">Crear una cuenta</h5>
+                    <form>
+                        <div class="form-group">
+                            <label>Nombre Completo</label>
+                            <input class="form-control" id="NombreTB" placeholder="Nombre Completo" />
+                        </div>
+                        <div class="form-group">
+                            <label>Nombre de usuario</label>
+                            <input class="form-control" id="UsernameTB" placeholder="Nombre de Usuario">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Correo Electronico</label>
+                            <input type="email" class="form-control" id="EmailTB" aria-describedby="emailHelp" placeholder="Correo">
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputPassword1">Contraseña</label>
+                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                        </div>
+                        <div style="margin-top:5px">
+                            <button type="submit" formmethod="post" class="btn btn-primary" style="width:100%">Crear cuenta</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
     </div>
 </body>
 

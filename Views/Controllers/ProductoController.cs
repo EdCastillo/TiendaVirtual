@@ -41,6 +41,22 @@ namespace Views.Controllers
                 return View(VG.usuarioActual);
             }
         }
-        
+        public  ActionResult ManageShowProduct(int id) {
+            if(VG.usuarioActual == null)//!=
+            {
+
+                return View();
+            }
+            else
+            {
+                return Redirect("~/Producto/AllProducts");
+            }
+        }
+        public async Task<ActionResult> ManagePutProduct(int id)
+        {
+
+            return View();
+        }
+
     }
 }

@@ -2,16 +2,53 @@
 @model IEnumerable<Views.Models.Producto>
 
 @{
+    Views.Models.UserCookie user;
     ViewBag.Title = "AllProducts";
     Layout = null;
+    CreateOrValidate();
+    void CreateOrValidate()
+
+    {
+        if (!String.IsNullOrEmpty(Response.Cookies["Username"].ToString()))
+        {
+            HttpCookie UserCookie = new HttpCookie("UserCookie");
+            UserCookie["US_ID"] = "0";
+            UserCookie["Username"] = "Invitado";
+            UserCookie["JsonToken"] = "NotValid";
+            UserCookie["ListProduct"] = new List<int>().ToString();
+            UserCookie.Expires.Add(new TimeSpan(0, 1, 0));
+            Response.Cookies.Add(UserCookie);
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie
+            {
+                Username = reqCookies["Username"].ToString(),
+                US_ID = Int32.Parse(reqCookies["US_ID"].ToString()),
+                JsonToken = reqCookies["JsonToken"].ToString(),
+                Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(reqCookies["ListProduct"].ToString())
+            };
+        }
+        else
+        {
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie {
+                Username = reqCookies["Username"].ToString(),
+                US_ID = Int32.Parse(reqCookies["US_ID"].ToString()),
+                JsonToken = reqCookies["JsonToken"].ToString(),
+                Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<int>>(reqCookies["ListProduct"].ToString())
+            };
+        }
+    }
+
 }
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
     <title>Tienda Virtual CR</title>
 </head>
 <body style="background-color:#E8D0F9">
-
+    
     <div class="jumbotron">
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <table class="table">
@@ -41,7 +78,7 @@
 
                 <tr class="col-12">
                     <td class="col-12">
-                        <button class="btn-block btn btn-lg" style="width:100%" onclick="window.location.href='ShowProduct?id=@Html.DisplayFor(modelItem=>item.PRO_ID)'">
+                        <button class="btn-block btn btn-lg" style="width:100%" onclick="window.location.href='ShowProduct?id=@Html.DisplayFor(modelItem => item.PRO_ID)'">
                                 <div class="container p-3 my-3 bg-dark text-white">
                                     <table class="table">
                                         <tr class="text-white text-center">
@@ -62,7 +99,9 @@
                 </tr>
             }
         </table>
-
+        <div>
+            <h5>@Request.Cookies["Username"].Value</h5>
+        </div>
     </div>
 </body>
 

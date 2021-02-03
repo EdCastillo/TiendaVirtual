@@ -13,7 +13,8 @@ namespace Views.Controllers
         {
             if (VG.usuarioActual == null)
             {
-                return RedirectToRoute(new { controller = "Login", action = "Login" });
+
+                return RedirectToRoute(new { controller = "Login", action = "Login" ,Valid="false"});
             }
             else
             {

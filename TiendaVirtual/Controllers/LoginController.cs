@@ -25,9 +25,6 @@ namespace TiendaVirtual.Controllers
         {
             if (login == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
-
-            //TODO: Validate credentials Correctly, this code is only for demo !!
-            
             if (!(GetUser(login)==null))
             {
                 if (login.Password.Equals(GetUser(login).US_CONTRASENA))
