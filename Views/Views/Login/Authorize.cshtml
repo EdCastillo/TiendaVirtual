@@ -1,0 +1,16 @@
+﻿@model Views.Models.Usuario
+@{
+    ViewBag.Title = "Authorize";
+    Layout = null;
+    Views.Models.UserCookie user = new Views.Models.UserCookie();
+    HttpCookie reqCookies = Request.Cookies["UserCookie"];
+    reqCookies.Values["US_ID"] = Model.US_ID.ToString();
+    reqCookies.Values["Username"] = Model.US_USUARIO;
+    reqCookies.Values["JsonToken"] = Model.token;
+    reqCookies.Expires.AddHours(24);
+    Response.Cookies.Add(reqCookies);
+}
+<script>
+    window.location.href = "/Login?Valid=true";
+</script>
+

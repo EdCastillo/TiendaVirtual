@@ -1,44 +1,72 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    @{ 
+        #region CookiesConfiguration
+        //Cookies Configuration
+        Views.Models.UserCookie user = new Views.Models.UserCookie();
+        CreateOrValidate();
+        void CreateOrValidate()
+        {
+            HttpCookie comp = Request.Cookies["UserCookie"];
+            if (comp == null)
+            {
+                //Crear cookies si no existen
+                HttpCookie UserCookie = new HttpCookie("UserCookie");
+                UserCookie["US_ID"] = "0";
+                UserCookie["Username"] = "Invitado";
+                UserCookie["JsonToken"] = "NotValid";
+                //Configurar lista de productos
+                UserCookie["ListProduct"] = "null";
+                UserCookie.Expires.AddHours(5);
+                Response.Cookies.Add(UserCookie);
+                HttpCookie reqCookies = Request.Cookies["UserCookie"];
+                user = new Views.Models.UserCookie
+                {
+                    Username = reqCookies["Username"].ToString(),
+                    US_ID = Int32.Parse(reqCookies["US_ID"].ToString()),
+                    JsonToken = reqCookies["JsonToken"].ToString()
+                };
+                if (!reqCookies["ListProduct"].ToString().Equals("null"))
+                {
+                    user.Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                }
+                else
+                {
+                    user.Products = null;
+                }
+            }
+            else
+            {
+                //cargar cookies existentes
+                HttpCookie reqCookies = Request.Cookies["UserCookie"];
+                user = new Views.Models.UserCookie();
+                user.Username = reqCookies["Username"].ToString();
+                user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+                user.JsonToken = reqCookies["JsonToken"].ToString();
+                if (!reqCookies["ListProduct"].ToString().Equals("null"))
+                {
+                    user.Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                }
+                else
+                {
+                    user.Products = null;
+                }
+            }
+        }
+        #endregion
+    }
+   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - Mi aplicación ASP.NET</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
 </head>
-<!--<body>-->
-    @*<div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Nombre de la aplicación", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Inicio", "Index", "Home")</li>
-                    <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>
-                </ul>
-            </div>
-        </div>
-    </div>*@
-    <!--<div class="container">
-        @RenderBody()
+<body>
+    @RenderBody()
+    <div class="container">
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - Mi aplicación ASP.NET</p>
+            <p>&copy; Esta pagina utiliza cookies</p>
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/bootstrap")
-    @RenderSection("scripts", required: false)
-</body>-->
+</body>
 </html>

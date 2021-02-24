@@ -13,7 +13,7 @@ namespace Views.Managers
     public class UsuarioManager
     {
         const string UrlAuthenticate = "http://localhost:51221/api/login/authenticate/";
-        const string UrlRegister = "http://localhost:51221/api/login/ingresasr/";
+        const string UrlRegister = "http://localhost:51221/api/login/ingresar/";
 
         public async Task<Usuario> Validar(string username, string password)
         {
@@ -38,7 +38,6 @@ namespace Views.Managers
             var response = await httpClient.PostAsync(UrlRegister,
                 new StringContent(JsonConvert.SerializeObject(usuario),
                 Encoding.UTF8, "application/json"));
-
             return
                 JsonConvert.DeserializeObject<Usuario>(
                     await response.Content.ReadAsStringAsync());

@@ -1,7 +1,67 @@
 ﻿@model Views.Models.PopUp
 @{
+    Views.Models.LoginRequest loginRequest = new Views.Models.LoginRequest();
     ViewBag.Title = "TV_Login";
     Layout = null;
+
+
+    #region CookiesConfiguration
+    //Cookies Configuration
+    Views.Models.UserCookie user = new Views.Models.UserCookie();
+    CreateOrValidate();
+    void CreateOrValidate()
+    {
+        HttpCookie comp = Request.Cookies["UserCookie"];
+        if (comp == null)
+        {
+            //Crear cookies si no existen
+            HttpCookie UserCookie = new HttpCookie("UserCookie");
+            UserCookie["US_ID"] = "0";
+            UserCookie["Username"] = "Invitado";
+            UserCookie["JsonToken"] = "NotValid";
+            UserCookie["ListProduct"] = "null";
+            UserCookie.Expires.AddHours(5);
+            Response.Cookies.Add(UserCookie);
+
+
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Carrito>();
+            }
+        }
+        else
+        {
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Carrito>();
+            }
+        }
+    }
+    #endregion
+
+
 }
 
 <head>
@@ -13,14 +73,17 @@
 </head>
 <body style="background-color:#E8D0F9">
     @{
-        if (Html.DisplayFor(model => model.Estado).ToString() == "false")
+        if (Html.DisplayFor(model => model.Estado).ToString() == "true")
         {
+
             <script type="text/javascript">
                 $(document).ready(function () {
                     $("#exampleModalCenter").modal('show');
                 });
             </script>
         }
+
+
     }
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -63,23 +126,22 @@
                 <div class="col-lg-6 col-md-12 col-sm-12">
                     <div>
                         <h5 class="display-4 text-white">Iniciar Sesion</h5>
-                        <form>
+                        <div>
                             <div class="form-group">
                                 <label for="exampleInputEmail1">Nombre de Usuario</label>
-                                <input class="form-control" name="usernameTBLogin" runat="server" placeholder="Nombre de Usuario">
-
+                                <input class="form-control" name="usernameTBLogin" id="usernameTBLogin" runat="server" placeholder="Nombre de Usuario">
                             </div>
                             <div class="form-group">
                                 <label for="exampleInputPassword1">Contraseña</label>
-                                <input type="password" class="form-control" name="passwordTBLogin" placeholder="Contraseña">
+                                <input type="password" class="form-control" id="passwordTBLogin" name="passwordTBLogin" placeholder="Contraseña">
                             </div>
                             <div style="margin-top:5px">
 
-                                <button style="width:100%" class="btn btn-primary" onclick="location.href='~/Login/Authenticate'">
+                                <button style="width:100%" class="btn btn-primary" onclick="Login()">
                                     Iniciar Sesion
                                 </button>
                             </div>
-                        </form>
+                        </div>
                     </div>
                 </div>
                 <div class="col-lg-6 col-md-12 col-sm-12">
@@ -87,7 +149,7 @@
                     <form>
                         <div class="form-group">
                             <label>Nombre Completo</label>
-                            <input class="form-control" id="NombreTB" placeholder="Nombre Completo" />
+                            <input class="form-control" id="NombreTB" placeholder="Nombre" />
                         </div>
                         <div class="form-group">
                             <label>Nombre de usuario</label>
@@ -99,15 +161,44 @@
                         </div>
                         <div class="form-group">
                             <label for="exampleInputPassword1">Contraseña</label>
-                            <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Contraseña">
+                            <input type="password" class="form-control" id="passwordTB" placeholder="Contraseña">
                         </div>
                         <div style="margin-top:5px">
-                            <button type="submit" formmethod="post" class="btn btn-primary" style="width:100%">Crear cuenta</button>
+                            <button class="btn btn-primary" style="width:100%" onclick="Registrar()">Crear cuenta</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function Registrar() {
+            var nombre = document.getElementById('NombreTB').value;
+            var correo = document.getElementById('UsernameTB').value;
+            var contrasena = document.getElementById('EmailTB').value;
+            var usuario = document.getElementById('passwordTB').value;
+            window.location.href = '/Login/Registrar?nombre=' + nombre + '&correo=' + correo + '&usuario=' + usuario + '&contrasena='+contrasena;
+        }
+        function Login() {
+            var username = document.getElementById('usernameTBLogin').value;
+            var password = document.getElementById('passwordTBLogin').value;
+            window.location.href = '/Login/Authorize?username=' + username + '&password=' + password;
+        }
+    </script>
+
+    @*@{
+        
+        <h2>@user.Username</h2>
+        if (user.JsonToken == null)
+        {
+            <h2>JsonVacio</h2>
+        }
+        else
+        {
+            <h2>@user.JsonToken</h2>
+        }
+    }*@
+
+
 </body>
 

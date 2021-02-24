@@ -15,14 +15,14 @@ namespace TiendaVirtual.Controllers
     public class PCARController : ApiController
     {
         [HttpGet]
-        public IHttpActionResult GetAllByCompraId(int id)
+        public IHttpActionResult GetAllByUserId(int id)
         {
             if (id == 0) { return BadRequest(); }
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
                 {
-                    SqlCommand sqlCommand = new SqlCommand(@"SELECT CAR_ID,PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM Producto_Carrito WHERE PCR_ID=@ID;", sqlConnection);
+                    SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM Producto_Carrito WHERE US_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
                     List<Producto_Carrito> productos = new List<Producto_Carrito>();
                     sqlConnection.Open();
@@ -31,11 +31,9 @@ namespace TiendaVirtual.Controllers
                     {
                         productos.Add(new Producto_Carrito
                         {
-
-                            CAR_ID = sqlDataReader.GetInt32(0),
-                            PRO_ID = sqlDataReader.GetInt32(1),
-                            CAR_PRO_CANTIDAD = sqlDataReader.GetInt32(2),
-                            PCR_ID = sqlDataReader.GetInt32(3)
+                            PRO_ID = sqlDataReader.GetInt32(0),
+                            CAR_PRO_CANTIDAD = sqlDataReader.GetInt32(1),
+                            PCR_ID = sqlDataReader.GetInt32(2)
                         });
                     }
                     sqlConnection.Close();
@@ -60,8 +58,8 @@ namespace TiendaVirtual.Controllers
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO Producto_Carrito(CAR_ID,PRO_ID,CAR_PRO_CANTIDAD) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD);", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@COM_ID", producto.CAR_ID);
+                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO Producto_Carrito(PRO_ID,CAR_PRO_CANTIDAD,US_ID) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD,@US_ID);", sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.CAR_PRO_CANTIDAD);
                 sqlConnection.Open();
@@ -104,9 +102,8 @@ namespace TiendaVirtual.Controllers
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE Producto_Carrito SET CAR_ID=@COM_ID,PRO_ID=@PRO_ID,CAR_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE PCR_ID=@ID;", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(@"UPDATE Producto_Carrito SET PRO_ID=@PRO_ID,CAR_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE PCR_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", producto.PCR_ID);
-                sqlCommand.Parameters.AddWithValue("@COM_ID", producto.CAR_ID);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.CAR_PRO_CANTIDAD);
                 sqlConnection.Open();

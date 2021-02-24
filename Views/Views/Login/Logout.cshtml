@@ -1,0 +1,16 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Logout";
+    HttpCookie UserCookie = new HttpCookie("UserCookie");
+    UserCookie["US_ID"] = "0";
+    UserCookie["Username"] = "Invitado";
+    UserCookie["JsonToken"] = "NotValid";
+    //Configurar lista de productos
+    UserCookie["ListProduct"] = "null";
+    UserCookie.Expires.AddHours(5);
+    Response.Cookies.Add(UserCookie);
+}
+<script>
+    window.location.href = "/producto/AllProducts";
+</script>
+

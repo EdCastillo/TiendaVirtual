@@ -130,6 +130,8 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Managers\CarritoManager.cs" />
+    <Compile Include="Managers\CookiesManager.cs" />
     <Compile Include="Managers\ProductoManager.cs" />
     <Compile Include="Managers\UsuarioManager.cs" />
     <Compile Include="Models\Carrito.cs" />
@@ -137,6 +139,7 @@
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\PopUp.cs" />
     <Compile Include="Models\Producto.cs" />
+    <Compile Include="Models\Producto_Carrito.cs" />
     <Compile Include="Models\UserCookie.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\VG.cs" />
@@ -187,10 +190,13 @@
     <Content Include="Views\Producto\ManageShowProduct.cshtml" />
     <Content Include="Views\Imagen\New.cshtml" />
     <Content Include="Views\Test\Index.cshtml" />
+    <Content Include="Views\Login\Authorize.cshtml" />
+    <Content Include="Views\Login\Logout.cshtml" />
+    <Content Include="Views\Carrito\AñadirProducto.cshtml" />
+    <Content Include="Views\Login\Registrar.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Carrito\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

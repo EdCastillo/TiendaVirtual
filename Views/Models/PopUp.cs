@@ -10,5 +10,6 @@ namespace Views.Models
         public string Titulo;
         public string Body;
         public string Estado;
+        public Usuario Usuario;
     }
 }

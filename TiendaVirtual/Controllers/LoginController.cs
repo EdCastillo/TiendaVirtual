@@ -38,7 +38,7 @@ namespace TiendaVirtual.Controllers
             }
             else
             {
-                return Unauthorized();
+                return BadRequest();
             }
         }
         private Usuario GetUser(LoginRequest login) {
@@ -64,8 +64,10 @@ namespace TiendaVirtual.Controllers
             {
                 //Validar inexistencia de username
                 Usuario user=GetUser(new LoginRequest { Username = usuario.US_USUARIO });
-                if (!(string.IsNullOrEmpty(user.US_USUARIO))) { return BadRequest("Este nombre de usuario ya está en uso."); }
-
+                if (!(string.IsNullOrEmpty(user.US_USUARIO))) 
+                { 
+                    return BadRequest("Este nombre de usuario ya está en uso."); 
+                }
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO USUARIO(US_NOMBRE,US_CORREO,US_USUARIO,US_CONTRASENA) VALUES(@US_NOMBRE,@US_CORREO,@US_USUARIO,@US_CONTRASENA);", sqlConnection);

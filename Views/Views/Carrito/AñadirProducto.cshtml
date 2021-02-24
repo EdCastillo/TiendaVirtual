@@ -1,0 +1,28 @@
+﻿@model Views.Models.Carrito
+@{
+    ViewBag.Title = "AñadirProducto";
+    Layout = null;
+    HttpCookie reqCookies = Request.Cookies["UserCookie"];
+    if (reqCookies["ListProduct"].ToString().Equals("null"))
+    {
+        //Inicializar lista si esta en null
+        List<Views.Models.Carrito> list = new List<Views.Models.Carrito>();
+        list.Add(new Views.Models.Carrito { PRO_ID = Model.PRO_ID, PRO_CANTIDAD = Model.PRO_CANTIDAD });
+
+        //Lanzar datos
+        reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+        Response.Cookies.Add(reqCookies);
+
+    }
+    else
+    {
+        List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+        list.Add(new Views.Models.Carrito { PRO_ID = Model.PRO_ID, PRO_CANTIDAD = Model.PRO_CANTIDAD });
+        reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(list);
+        Response.Cookies.Add(reqCookies);
+    }
+}
+<script>
+    window.location.href = '/Producto/ShowProduct?id='+@Model.PRO_ID;
+</script>
+

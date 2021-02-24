@@ -17,14 +17,19 @@ namespace Views
                 url: "Test",
                 defaults: new { controller = "Test", action = "Index" });
             routes.MapRoute(
+                name: "LoginRoutes",
+                url: "Login/{action}",
+                defaults: new { controller = "Login" }
+                );
+            routes.MapRoute(
                 name:"Home",
                 url:"Home",
                 defaults:new { controller="Home",action="Index" });
             routes.MapRoute(name: "Imagenes", url: "Imagen", defaults: new { controller = "Imagen", action = "New" });
             routes.MapRoute(
                 name:"Carrito",
-                url:"Carrito/{action}",
-                defaults:new { controller="Carrito"});
+                url:"Carrito/Add",
+                defaults:new { controller="Carrito",action="AñadirProducto"});
             routes.MapRoute(
                 name: "Producto",
                 url: "producto/{action}",
@@ -36,11 +41,17 @@ namespace Views
             );
             routes.MapRoute(
                 name: "Login", url: "Login",
-                defaults: new { controller = "Login",action="Login" }
+                defaults: new { controller = "Login", action = "Login" }
             );
             routes.MapRoute(
-                name: "Authenticate", url: "Login/Authenticate",
-                defaults: new { controller = "Login", action = "Authenticate" }
+                name: "Registro", url: "Login/Registrar",
+                defaults: new { controller = "Login", action = "Registrar" }
+            );
+
+
+            routes.MapRoute(
+                name: "Logout", url: "Login/logout",
+                defaults: new { controller = "Login", action = "Logout" }
             );
 
 

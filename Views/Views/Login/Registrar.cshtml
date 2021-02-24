@@ -1,0 +1,9 @@
+﻿@model Views.Models.Usuario
+@{
+    ViewBag.Title = "Registrar";
+    Layout = null;
+    
+}
+<script>
+    window.location.href = '/Login/Authorize?username=' + @Model.US_USUARIO + '&password=' + @Model.US_CONTRASENA;
+</script>
