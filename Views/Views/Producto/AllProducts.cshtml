@@ -7,31 +7,39 @@
     Layout = null;
 
     #region CookiesConfiguration
-    //Cookies Configuration
+    //Cookies Configuration 3.0
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     CreateOrValidate();
     void CreateOrValidate()
     {
         HttpCookie comp = Request.Cookies["UserCookie"];
-        if (String.IsNullOrEmpty(comp["Username"].ToString()))
+        if (comp == null)
         {
             //Crear cookies si no existen
             HttpCookie UserCookie = new HttpCookie("UserCookie");
             UserCookie["US_ID"] = "0";
             UserCookie["Username"] = "Invitado";
             UserCookie["JsonToken"] = "NotValid";
-            //Configurar lista de productos
-            //UserCookie["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(new List<Views.Models.Carrito>()).ToString();
+            UserCookie["ListProduct"] = "null";
             UserCookie.Expires.AddHours(5);
             Response.Cookies.Add(UserCookie);
+
+
+            //cargar cookies existentes
             HttpCookie reqCookies = Request.Cookies["UserCookie"];
-            user = new Views.Models.UserCookie
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
             {
-                Username = reqCookies["Username"].ToString(),
-                US_ID = Int32.Parse(reqCookies["US_ID"].ToString()),
-                JsonToken = reqCookies["JsonToken"].ToString()
-                //Añadir lista de productos
-            };
+                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Carrito>();
+            }
         }
         else
         {
@@ -41,7 +49,15 @@
             user.Username = reqCookies["Username"].ToString();
             user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
             user.JsonToken = reqCookies["JsonToken"].ToString();
-            //user.Products = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Carrito>();
+            }
         }
     }
     #endregion

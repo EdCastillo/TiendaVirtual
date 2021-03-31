@@ -89,7 +89,6 @@
     <h1 class="display-3">Show cookies</h1>
     @{
         HttpCookie read = Request.Cookies["UserCookie"];
-        
         <h2>Product List</h2>
         <h4>@read["ListProduct"].ToString()</h4>
         <h2>Username</h2>
@@ -109,6 +108,15 @@
         else
         {
             <h4>@read["JsonToken"].ToString()</h4>
+        }
+        <h2>US_ID</h2>
+        if (read["US_ID"].ToString().Equals("0"))
+        {
+            <h4>null</h4>
+
+        }
+        else { 
+            <h4>@read["US_ID"].ToString()</h4>
         }
 
 

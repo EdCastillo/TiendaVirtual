@@ -9,7 +9,7 @@
     
 
     #region CookiesConfiguration
-    //Cookies Configuration
+    //Cookies Configuration 3.0
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     CreateOrValidate();
     void CreateOrValidate()
@@ -136,7 +136,7 @@
                         </button>
                     </td>
                     <td class="col-sm-12 col-lg-6 col-md-6">
-                        <button class="btn btn-outline-light btn-block btn-lg" style="width:100%" type="button">
+                        <button class="btn btn-outline-light btn-block btn-lg" style="width:100%" type="button" id="botonShare">
                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
                                 <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
                             </svg>
@@ -149,8 +149,19 @@
         <script>
         var counter = document.getElementById('productcounter');
             var agregar = document.getElementById('botonCarrito');
+            var btnShare = document.getElementById('botonShare');
             onchange();
             agregar.onclick = agregaraCarrito;
+            btnShare.onclick = share;
+            
+            function share() {
+                var aux = document.createElement("input");
+                aux.setAttribute("value", window.location.href);
+                document.body.appendChild(aux);
+                aux.select();
+                document.execCommand("copy");
+                document.body.removeChild(aux);
+            }
         function onchange() {
             counter.onchange = limit;
         }
@@ -169,7 +180,8 @@
                 window.location.href = '/Carrito/add?id=' +@Model.Producto.PRO_ID+'&cantidad=' + document.getElementById('productcounter').value;
             }
             else {
-                window.location.href = '/Carrito/add?id=' +@Model.Producto.PRO_ID+'&cantidad=' + document.getElementById('productcounter').value + '&userID=' +@user.US_ID+"&token=" + '@String.Format(user.JsonToken)';
+                console.log('/Carrito/addLog?id=' +@Model.Producto.PRO_ID+'&cantidad=' + document.getElementById('productcounter').value + '&userID=' +@user.US_ID+"&token=" + '@String.Format(user.JsonToken)');
+                window.location.href = '/Carrito/addLog?id=' +@Model.Producto.PRO_ID+'&cantidad=' + document.getElementById('productcounter').value + '&userID=' +@user.US_ID+"&token=" + '@String.Format(user.JsonToken)';
             }
         }
         </script>

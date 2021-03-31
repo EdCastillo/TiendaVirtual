@@ -1,12 +1,19 @@
-﻿@model Views.Models.Usuario
+﻿@Model dynamic;
 @{
     ViewBag.Title = "Authorize";
     Layout = null;
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     HttpCookie reqCookies = Request.Cookies["UserCookie"];
-    reqCookies.Values["US_ID"] = Model.US_ID.ToString();
-    reqCookies.Values["Username"] = Model.US_USUARIO;
-    reqCookies.Values["JsonToken"] = Model.token;
+    reqCookies.Values["US_ID"] = Model.Usuario.US_ID.ToString();
+    reqCookies.Values["Username"] = Model.Usuario.US_USUARIO;
+    reqCookies.Values["JsonToken"] = Model.Usuario.token;
+
+    reqCookies.Values["ListProduct"] = Model.List;
+
+
+
+
+
     reqCookies.Expires.AddHours(24);
     Response.Cookies.Add(reqCookies);
 }

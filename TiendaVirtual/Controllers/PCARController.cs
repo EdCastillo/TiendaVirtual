@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using TiendaVirtual.Models;
 
@@ -22,7 +18,7 @@ namespace TiendaVirtual.Controllers
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
                 {
-                    SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM Producto_Carrito WHERE US_ID=@ID;", sqlConnection);
+                    SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM PRODUCTO_CARRITO WHERE US_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
                     List<Producto_Carrito> productos = new List<Producto_Carrito>();
                     sqlConnection.Open();
@@ -51,14 +47,14 @@ namespace TiendaVirtual.Controllers
         public IHttpActionResult PublicInsert(Producto_Carrito producto)
         {
             if (producto == null) { return BadRequest(); }
-            if (PrivateInsert(producto)) { return Ok(); }
+            if (PrivateInsert(producto)) { return Ok(producto); }
             else { return InternalServerError(); }
         }
         private bool PrivateInsert(Producto_Carrito producto)
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO Producto_Carrito(PRO_ID,CAR_PRO_CANTIDAD,US_ID) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD,@US_ID);", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_CARRITO(PRO_ID,CAR_PRO_CANTIDAD,US_ID) VALUES(@PRO_ID,@COM_PRO_CANTIDAD,@US_ID);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.CAR_PRO_CANTIDAD);
@@ -75,7 +71,7 @@ namespace TiendaVirtual.Controllers
         {
             if (id == 0) { return BadRequest(); }
             if (PrivateDelete(id)) { return Ok(); }
-            else { return InternalServerError(); }
+            else { return Ok(id); }
         }
         private bool PrivateDelete(int id)
         {

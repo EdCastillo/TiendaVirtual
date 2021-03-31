@@ -10,7 +10,7 @@ namespace TiendaVirtual.Controllers
     [RoutePrefix("api/login")]
     public class LoginController : ApiController
     {
-        
+
         [HttpGet]
         [Route("echouser")]
         public IHttpActionResult EchoUser()
@@ -25,7 +25,7 @@ namespace TiendaVirtual.Controllers
         {
             if (login == null)
                 throw new HttpResponseException(HttpStatusCode.BadRequest);
-            if (!(GetUser(login)==null))
+            if (!(GetUser(login) == null))
             {
                 if (login.Password.Equals(GetUser(login).US_CONTRASENA))
                 {
@@ -41,32 +41,36 @@ namespace TiendaVirtual.Controllers
                 return BadRequest();
             }
         }
-        private Usuario GetUser(LoginRequest login) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+        private Usuario GetUser(LoginRequest login)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT US_USUARIO,US_CONTRASENA,US_ID FROM USUARIO WHERE US_USUARIO=@USERNAME", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@USERNAME",login.Username);
+                sqlCommand.Parameters.AddWithValue("@USERNAME", login.Username);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                 Usuario usuario = new Usuario();
-                while (sqlDataReader.Read()) {
-                    usuario = new Usuario { US_USUARIO = sqlDataReader.GetString(0), US_CONTRASENA = sqlDataReader.GetString(1),US_ID=sqlDataReader.GetInt32(2) };
+                while (sqlDataReader.Read())
+                {
+                    usuario = new Usuario { US_USUARIO = sqlDataReader.GetString(0), US_CONTRASENA = sqlDataReader.GetString(1), US_ID = sqlDataReader.GetInt32(2) };
                 }
                 sqlConnection.Close();
                 return usuario;
             }
-        
+
         }
         [HttpPost]
         [Route("ingresar")]
-        public IHttpActionResult NewUser(Usuario usuario) {
+        public IHttpActionResult NewUser(Usuario usuario)
+        {
             if (usuario == null) { return BadRequest(); }
             try
             {
                 //Validar inexistencia de username
-                Usuario user=GetUser(new LoginRequest { Username = usuario.US_USUARIO });
-                if (!(string.IsNullOrEmpty(user.US_USUARIO))) 
-                { 
-                    return BadRequest("Este nombre de usuario ya está en uso."); 
+                Usuario user = GetUser(new LoginRequest { Username = usuario.US_USUARIO });
+                if (!(string.IsNullOrEmpty(user.US_USUARIO)))
+                {
+                    return BadRequest("Este nombre de usuario ya está en uso.");
                 }
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
                 {
@@ -78,32 +82,38 @@ namespace TiendaVirtual.Controllers
                     sqlConnection.Open();
                     int filasAfectadas = sqlCommand.ExecuteNonQuery();
                     sqlConnection.Close();
-                    if (filasAfectadas>0) {
-                        return Ok(usuario); }
+                    if (filasAfectadas > 0)
+                    {
+                        return Ok(usuario);
+                    }
                     else { return InternalServerError(); }
                 }
-        }
-            catch {
+            }
+            catch
+            {
                 return InternalServerError();
-    }
-}
+            }
+        }
 
-        private Usuario GetUserByID(int id) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
-                SqlCommand sqlCommand = new SqlCommand(@"SELECT US_ID,US_NOMBRE,US_CORREO,US_USUARIO FROM USUARIO WHERE US_ID=@ID;",sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ID",id);
+        private Usuario GetUserByID(int id)
+        {
+            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            {
+                SqlCommand sqlCommand = new SqlCommand(@"SELECT US_ID,US_NOMBRE,US_CORREO,US_USUARIO FROM USUARIO WHERE US_ID=@ID;", sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@ID", id);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                 Usuario usuario = new Usuario();
-                while (sqlDataReader.Read()) {
-                    usuario = new Usuario {US_ID=sqlDataReader.GetInt32(0),US_NOMBRE=sqlDataReader.GetString(1),US_CORREO=sqlDataReader.GetString(2),US_USUARIO=sqlDataReader.GetString(3) };
+                while (sqlDataReader.Read())
+                {
+                    usuario = new Usuario { US_ID = sqlDataReader.GetInt32(0), US_NOMBRE = sqlDataReader.GetString(1), US_CORREO = sqlDataReader.GetString(2), US_USUARIO = sqlDataReader.GetString(3) };
                 }
                 sqlConnection.Close();
                 return usuario;
 
             }
         }
-        
+
 
 
     }

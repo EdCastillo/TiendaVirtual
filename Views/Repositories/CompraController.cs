@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data.SqlClient;
-using System.Web.Http;
-using TiendaVirtual.Models;
+using Views.Models;
 
 namespace TiendaVirtual.Controllers
 {
-    [RoutePrefix("api/compra")]
-    [Authorize]//Authorize
-    public class CompraController : ApiController
+    public class CompraRepository
     {
 
-        [HttpGet]
-        public IHttpActionResult GetCompraByID(int id)
+        public Compra GetCompraByID(int id)
         {
-            if (id == 0) { return BadRequest(); }
+            if (id == 0) { return null; }
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
@@ -36,24 +32,22 @@ namespace TiendaVirtual.Controllers
                         };
                     }
                     sqlConnection.Close();
-                    if (compra.COM_ID == 0) { return BadRequest(); }
-                    else { return Ok(compra); }
+                    if (compra.COM_ID == 0) { return null; }
+                    else { return compra; }
                 }
             }
             catch
             {
-                return InternalServerError();
+                return null;
             }
         }
 
 
 
 
-        [HttpGet]
-        [Route("user")]
-        public IHttpActionResult GetAllComprasByUser(int id)
+        public IEnumerable<Compra> GetAllComprasByUser(int id)
         {
-            if (id == 0) { return BadRequest(); }
+            
             try
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
@@ -74,22 +68,20 @@ namespace TiendaVirtual.Controllers
                         });
                     }
                     sqlConnection.Close();
-                    return Ok(compras);
+                    return compras;
                 }
             }
             catch
             {
-                return InternalServerError();
+                return null;
             }
         }
 
-        [HttpPost]
-        [Route("ingresar")]
-        public IHttpActionResult PublicIngresar(Compra compra)
+        public void PublicIngresar(Compra compra)
         {
-            if (compra == null) { return BadRequest(); }
-            if (PrivateIngresar(compra)) { return Ok(); }
-            else { return InternalServerError(); }
+            if (compra == null) {  }
+            if (PrivateIngresar(compra)) {  }
+            else {  }
         }
 
         private bool PrivateIngresar(Compra compra)
