@@ -61,6 +61,24 @@ namespace Views
                 name: "CarritoLog",
                 url: "Carrito/AddLog",
                 defaults: new { controller = "Carrito", action = "AñadirProductoLog" });
+            routes.MapRoute(
+                name:"VerCarrito",
+                url: "Carrito/Show",
+                defaults: new { controller="Carrito",action="VerCarrito"}
+                );
+            routes.MapRoute(
+                name:"BorrarDeCarrito",
+                url:"Carrito/Borrar",
+                defaults: new { controller="Carrito",action="BorrarCarrito"}
+                );
+
+
+            //COMPRA CONTROLLER
+            routes.MapRoute(
+                name:"VerCompras",
+                url:"Usuario/Compras",
+                defaults:new { controller="Compra",action="VerCompras"}
+                );
 
 
 

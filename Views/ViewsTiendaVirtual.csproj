@@ -121,6 +121,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CarritoController.cs" />
+    <Compile Include="Controllers\CompraController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ImagenController.cs" />
@@ -131,7 +132,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Managers\CarritoManager.cs" />
+    <Compile Include="Managers\CompraManager.cs" />
     <Compile Include="Managers\CookiesManager.cs" />
+    <Compile Include="Managers\PCManager.cs" />
     <Compile Include="Managers\ProductoManager.cs" />
     <Compile Include="Managers\UsuarioManager.cs" />
     <Compile Include="Models\Carrito.cs" />
@@ -141,6 +144,7 @@
     <Compile Include="Models\PopUp.cs" />
     <Compile Include="Models\Producto.cs" />
     <Compile Include="Models\Producto_Carrito.cs" />
+    <Compile Include="Models\Producto_Compra.cs" />
     <Compile Include="Models\UserCookie.cs" />
     <Compile Include="Models\Usuario.cs" />
     <Compile Include="Models\VG.cs" />
@@ -197,6 +201,9 @@
     <Content Include="Views\Carrito\AñadirProducto.cshtml" />
     <Content Include="Views\Login\Registrar.cshtml" />
     <Content Include="Views\Carrito\AñadirProductoLog.cshtml" />
+    <Content Include="Views\Compra\VerCompras.cshtml" />
+    <Content Include="Views\Carrito\VerCarrito.cshtml" />
+    <Content Include="Views\Carrito\BorrarCarrito.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

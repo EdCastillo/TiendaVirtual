@@ -39,7 +39,6 @@ namespace Views.Managers
             var response = await client.PostAsync(UrlIngresar,
                 new StringContent(JsonConvert.SerializeObject(producto), Encoding.UTF8,
                 "application/json"));
-            Console.WriteLine(response.ToString());
             return JsonConvert.DeserializeObject<Producto_Carrito>(await response.Content.ReadAsStringAsync());
         }
         public async Task<Carrito> Actualizar(Carrito carrito, string token)

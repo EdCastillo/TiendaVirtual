@@ -30,6 +30,9 @@ namespace Views.Controllers
                 {
                     return View(new PopUp { Estado = "true", Titulo = "Hola!", Body = "Credenciales Incorrectas" });
                 }
+                if (Valid=="needLogin") {
+                    return View(new PopUp { Estado = "true", Titulo = "Hola!", Body = "Necesitas iniciar sesion para acceder a tus compras!" });
+                }
                 else
                 {
                     return View(new PopUp { Estado = "false", Titulo = "null", Body = "null" });

@@ -7,6 +7,6 @@ namespace Views.Models
         public int US_ID { get; set; }
         public string Username { get; set; }
         public string JsonToken { get; set; }
-        public List<Carrito> Products { get; set; }
+        public List<Producto_Carrito> Products { get; set; }
     }
 }

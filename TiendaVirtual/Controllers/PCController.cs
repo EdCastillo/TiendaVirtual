@@ -20,7 +20,7 @@ namespace TiendaVirtual.Controllers
             {
                 using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
                 {
-                    SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_ID FROM PRODUCTO_COMPRA WHERE COM_ID=@ID;", sqlConnection);
+                    SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_ID,CM_PRECIO_PRODUCTO_UNIDAD FROM PRODUCTO_COMPRA WHERE COM_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
                     List<Producto_Compra> productos = new List<Producto_Compra>();
                     sqlConnection.Open();
@@ -29,11 +29,11 @@ namespace TiendaVirtual.Controllers
                     {
                         productos.Add(new Producto_Compra
                         {
-
                             COM_ID = sqlDataReader.GetInt32(0),
                             PRO_ID = sqlDataReader.GetInt32(1),
                             COM_PRO_CANTIDAD = sqlDataReader.GetInt32(2),
-                            CM_ID = sqlDataReader.GetInt32(3)
+                            CM_ID = sqlDataReader.GetInt32(3),
+                            CM_PRECIO_PRODUCTO_UNIDAD=sqlDataReader.GetInt32(4)
                         });
                     }
                     sqlConnection.Close();

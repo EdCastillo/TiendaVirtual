@@ -9,7 +9,7 @@
     
 
     #region CookiesConfiguration
-    //Cookies Configuration 3.0
+    //Cookies Configuration 4.0
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     CreateOrValidate();
     void CreateOrValidate()
@@ -35,12 +35,12 @@
             user.JsonToken = reqCookies["JsonToken"].ToString();
             if (!reqCookies["ListProduct"].ToString().Equals("null"))
             {
-                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
                 user.Products = list;
             }
             else
             {
-                user.Products = new List<Views.Models.Carrito>();
+                user.Products = new List<Views.Models.Producto_Carrito>();
             }
         }
         else
@@ -53,12 +53,12 @@
             user.JsonToken = reqCookies["JsonToken"].ToString();
             if (!reqCookies["ListProduct"].ToString().Equals("null"))
             {
-                List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
                 user.Products = list;
             }
             else
             {
-                user.Products = new List<Views.Models.Carrito>();
+                user.Products = new List<Views.Models.Producto_Carrito>();
             }
         }
     }

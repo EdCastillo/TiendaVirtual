@@ -1,23 +1,24 @@
-﻿@model Views.Models.Carrito
+﻿@model Views.Models.Producto_Carrito
 @{
+
+    //Version 2.0
     ViewBag.Title = "AñadirProducto";
     Layout = null;
     HttpCookie reqCookies = Request.Cookies["UserCookie"];
     if (reqCookies["ListProduct"].ToString().Equals("null"))
     {
         //Inicializar lista si esta en null
-        List<Views.Models.Carrito> list = new List<Views.Models.Carrito>();
-        list.Add(new Views.Models.Carrito { PRO_ID = Model.PRO_ID, PRO_CANTIDAD = Model.PRO_CANTIDAD });
+        List<Views.Models.Producto_Carrito> list = new List<Views.Models.Producto_Carrito>();
+        list.Add(new Views.Models.Producto_Carrito { PRO_ID = Model.PRO_ID, CAR_PRO_CANTIDAD = Model.CAR_PRO_CANTIDAD });
 
         //Lanzar datos
         reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(list);
         Response.Cookies.Add(reqCookies);
-
     }
     else
     {
-        List<Views.Models.Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Carrito>>(reqCookies["ListProduct"].ToString());
-        list.Add(new Views.Models.Carrito { PRO_ID = Model.PRO_ID, PRO_CANTIDAD = Model.PRO_CANTIDAD });
+        List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+        list.Add(new Views.Models.Producto_Carrito { PRO_ID = Model.PRO_ID, CAR_PRO_CANTIDAD = Model.CAR_PRO_CANTIDAD });
         reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(list);
         Response.Cookies.Add(reqCookies);
     }

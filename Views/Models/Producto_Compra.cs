@@ -1,4 +1,9 @@
-﻿namespace TiendaVirtual.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+
+namespace Views.Models
 {
     public class Producto_Compra
     {

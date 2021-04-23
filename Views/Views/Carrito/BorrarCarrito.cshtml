@@ -1,0 +1,119 @@
+﻿@model dynamic
+
+@{
+    Layout = null;
+    ViewBag.Title = "BorrarCarrito";
+    if (Model.Auth == "false")
+    {
+        HttpCookie reqCookies = Request.Cookies["UserCookie"];
+        if (reqCookies["ListProduct"].ToString().Equals("null"))
+        {
+        }
+        else
+        {
+            List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+            List<Views.Models.Producto_Carrito> newList = new List<Views.Models.Producto_Carrito>();
+            foreach (var i in list)
+            {
+                if (i.PRO_ID != Model.id)
+                {
+                    newList.Add(i);
+                }
+            }
+            reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(newList);
+            Response.Cookies.Add(reqCookies);
+
+        }
+    }
+    else
+    {
+        HttpCookie reqCookies = Request.Cookies["UserCookie"];
+        if (reqCookies["ListProduct"].ToString().Equals("null"))
+        {
+        }
+        else
+        {
+            List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+            List<Views.Models.Producto_Carrito> newList = new List<Views.Models.Producto_Carrito>();
+            foreach (var i in list)
+            {
+                if (i.PCR_ID != Model.id)
+                {
+                    newList.Add(i);
+                }
+            }
+            reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(newList);
+            Response.Cookies.Add(reqCookies);
+
+        }
+
+    }
+
+    #region CookiesConfiguration
+    //Cookies Configuration 4.0
+    Views.Models.UserCookie user = new Views.Models.UserCookie();
+    CreateOrValidate();
+    void CreateOrValidate()
+    {
+        HttpCookie comp = Request.Cookies["UserCookie"];
+        if (comp == null)
+        {
+            //Crear cookies si no existen
+            HttpCookie UserCookie = new HttpCookie("UserCookie");
+            UserCookie["US_ID"] = "0";
+            UserCookie["Username"] = "Invitado";
+            UserCookie["JsonToken"] = "NotValid";
+            UserCookie["ListProduct"] = "null";
+            UserCookie.Expires.AddHours(5);
+            Response.Cookies.Add(UserCookie);
+
+
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Producto_Carrito>();
+            }
+        }
+        else
+        {
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Producto_Carrito>();
+            }
+        }
+    }
+    #endregion
+
+
+
+
+
+
+
+}
+<script>
+    window.location.href = '/Carrito/Show?json=@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)';
+</script>
+
+

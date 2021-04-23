@@ -13,6 +13,7 @@ namespace TiendaVirtual.Controllers
     {
 
         [HttpGet]
+        [Route("COM_ID")]
         public IHttpActionResult GetCompraByID(int id)
         {
             if (id == 0) { return BadRequest(); }
@@ -45,12 +46,7 @@ namespace TiendaVirtual.Controllers
                 return InternalServerError();
             }
         }
-
-
-
-
         [HttpGet]
-        [Route("user")]
         public IHttpActionResult GetAllComprasByUser(int id)
         {
             if (id == 0) { return BadRequest(); }
@@ -77,9 +73,9 @@ namespace TiendaVirtual.Controllers
                     return Ok(compras);
                 }
             }
-            catch
+            catch (Exception ex)
             {
-                return InternalServerError();
+                return InternalServerError(ex);
             }
         }
 
