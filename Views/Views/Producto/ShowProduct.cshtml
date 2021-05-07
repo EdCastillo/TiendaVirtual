@@ -6,7 +6,7 @@
     ViewBag.Title = "ShowProduct";
     Layout = null;
 
-    
+
 
     #region CookiesConfiguration
     //Cookies Configuration 4.0
@@ -63,6 +63,13 @@
         }
     }
     #endregion
+    int value = 0;
+    foreach (var p in user.Products) {
+        if (p.PRO_ID == Model.Producto.PRO_ID) {
+            value = p.CAR_PRO_CANTIDAD;
+            break;
+        }
+    }
 }
 <head>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
@@ -147,6 +154,7 @@
 
         </div>
         <script>
+            document.getElementById('productcounter').value=@value;
         var counter = document.getElementById('productcounter');
             var agregar = document.getElementById('botonCarrito');
             var btnShare = document.getElementById('botonShare');

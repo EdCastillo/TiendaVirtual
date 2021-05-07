@@ -1,4 +1,4 @@
-﻿@model dynamic
+﻿@model IEnumerable<Views.UnifiedModels.CompraUnifiedModel>
 @{
     ViewBag.Title = "VerCompras";
     Layout = null;
@@ -108,30 +108,34 @@
         </div>
         #endregion
     }
+    
 
-
-    @{ foreach (var item in Model.Compra)
+    @{ 
+        <h1 class="display-4 text-center">Compras realizadas</h1>
+        foreach (var item in Model)
         {
-
+            int total = 0;
             <div class="container bg-dark text-white p-3" style="margin-top:15px;padding-bottom:5px">
                 <div class="row text-center">
-                    <div class="col">@item.COM_ID</div>
-                    <div class="col">@item.COM_FECHA_COMPRA</div>
-                    <div class="col">
-                        <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample_@item.COM_ID" aria-expanded="false" aria-controls="collapseExample">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
-                                <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
-                                <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
-                            </svg>
-                        </button>
-                    </div>
+                        <div class="row" style="padding-bottom:7px">
+                            <div class="col">ID Compra: @item.COM_ID</div>
+                            <div class="col">Fecha: @item.COM_FECHA_COMPRA</div>
+                            <div class="col">
+                                <button class="btn btn-outline-primary" type="button" data-toggle="collapse" data-target="#collapseExample_@item.COM_ID" aria-expanded="false" aria-controls="collapseExample">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-eye-fill" viewBox="0 0 16 16">
+                                        <path d="M10.5 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0z" />
+                                        <path d="M0 8s3-5.5 8-5.5S16 8 16 8s-3 5.5-8 5.5S0 8 0 8zm8 3.5a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z" />
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
                     <div>
-                        <div class="collapse bg-white" id="collapseExample_@item.COM_ID">
-                            <table class="table text-white">
+                        <div class="collapse bg-white rounded-3" id="collapseExample_@item.COM_ID">
+                            <table class="table text-white ">
                                 <thead>
                                     <tr class="text-dark table text-center">
                                         <th>
-                                            <h4>ID del producto</h4>
+                                            <h4>Nombre</h4>
                                         </th>
                                         <th>
                                             <h4>Cantidad</h4>
@@ -145,26 +149,48 @@
                                     </tr>
                                 </thead>
                                 <tbody class="text-center text-dark">
+                                    @foreach (var product in item.itemList)
+                                    {
                                     <tr>
-                                        <th scope="row">1</th>
-                                        <td>Mark</td>
-                                        <td>Otto</td>
-                                        <td>mdo</td>
+                                        <td>
+                                            @product.PRO_NOMBRE
+                                        </td>
+
+                                        <td>
+                                            @product.PRO_CANTIDAD_UNIDADES
+                                        </td>
+                                        <td>
+                                            ₡@product.PRO_PRECIO
+                                        </td>
+                                        <td>
+                                            ₡@(product.PRO_PRECIO * product.PRO_CANTIDAD_UNIDADES)
+                                        </td>
+                                        @{total += (int)product.PRO_PRECIO * product.PRO_CANTIDAD_UNIDADES;}
                                     </tr>
-                                    <tr>
-                                        <th scope="row">2</th>
-                                        <td>Jacob</td>
-                                        <td>Thornton</td>
-                                        <td>fat</td>
-                                    </tr>
-                                    <tr>
-                                        <th scope="row">3</th>
-                                        <td>Larry</td>
-                                        <td>the Bird</td>
-                                        <td>twitter</td>
-                                    </tr>
+
+                                    }
                                 </tbody>
+                                
                             </table>
+                            <div class="row text-dark">
+                                <div class="row">
+                                    <div class="col">
+                                        <h6 class="display-4" style="font-size:30px">Direccion de envio </h6>
+                                    </div>
+                                    <div class="col">@item.COM_LUGAR_DE_ENVIO</div>
+                                </div>
+                                <div class="row">
+                                    <div class="col">
+                                        <h4 class="display-4">Total de la compra</h4>
+                                    </div>
+                                    <div class="col">
+                                        <h4 class="display-4">₡@total</h4>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="padding-bottom:5px">
+                                <button class="btn btn-success" style="width:95%" onclick="window.location.href = '/Usuario/Compra/VerCompra?id=@item.COM_ID&token=@user.JsonToken'">Ver compra</button>
+                            </div>
                         </div>
                     </div>
 

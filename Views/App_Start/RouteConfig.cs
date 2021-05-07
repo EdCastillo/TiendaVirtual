@@ -78,7 +78,11 @@ namespace Views
                 name:"VerCompras",
                 url:"Usuario/Compras",
                 defaults:new { controller="Compra",action="VerCompras"}
-                );
+            );
+            routes.MapRoute(
+                name:"VerCompra",
+                url:"Usuario/Compra/VerCompra",
+                defaults:new{controller="Compra",action="VerCompra"});
 
 
 

@@ -13,7 +13,7 @@ namespace Views.Managers
     public class CompraManager
     {
         const string URL= "http://localhost:51221/api/Compra/";
-        const string URLgetByID = "http://localhost:51221/api/Compra/";
+        const string URLgetByID = "http://localhost:51221/api/compra/COM_ID?id=";
         const string UrlIngresar = "http://localhost:51221/api/compra/ingresar/";
 
         HttpClient GetClient(string token)
@@ -42,6 +42,11 @@ namespace Views.Managers
         {
             HttpClient client = GetClient(token);
             await client.PostAsync(UrlIngresar, new StringContent(JsonConvert.SerializeObject(compra), Encoding.UTF8, "application/json"));
+        }
+        public async Task<Compra> GetCompra(string id, string token) {
+            HttpClient client = GetClient(token);
+            string result = await client.GetStringAsync(URLgetByID+id);
+            return JsonConvert.DeserializeObject<Compra>(result);
         }
 
 

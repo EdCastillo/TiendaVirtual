@@ -73,7 +73,7 @@
 </head>
 <body style="background-color:#E8D0F9">
     @{
-        #region Header 2.0
+        #region Header 3.0
         <div class="jumbotron">
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <table class="table">
@@ -103,7 +103,17 @@
                                         <a class="dropdown-item" href="~/Carrito/Show?json=@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)">Carrito</a>
                                         <a class="dropdown-item" onclick="goToCompras();">Compras</a>
                                         <a class="dropdown-item" href="~/User/Configuration">Configuracion</a>
-                                        <a class="dropdown-item" href="~/login/logout">Cerrar Sesion</a>
+                                        @{
+                                            if (user.Username.Equals("Invitado"))
+                                            {
+                                                <a class="dropdown-item" href="~/Login">Iniciar Sesion</a>
+                                            }
+                                            else
+                                            {
+                                                <a class="dropdown-item" href="~/login/logout">Cerrar Sesion</a>
+                                            }
+                                        }
+
                                     </div>
                                 </div>
                             </div>

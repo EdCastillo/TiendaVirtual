@@ -139,10 +139,13 @@
     <Compile Include="Managers\UsuarioManager.cs" />
     <Compile Include="Models\Carrito.cs" />
     <Compile Include="Models\Compra.cs" />
+    <Compile Include="UnifiedModels\CompraUnifiedModel.cs" />
     <Compile Include="Models\Imagen.cs" />
     <Compile Include="Models\LoginRequest.cs" />
     <Compile Include="Models\PopUp.cs" />
     <Compile Include="Models\Producto.cs" />
+    <Compile Include="UnifiedModels\ProductoCarritoUnifiedModel.cs" />
+    <Compile Include="UnifiedModels\ProductoCompraUnifiedModel.cs" />
     <Compile Include="Models\Producto_Carrito.cs" />
     <Compile Include="Models\Producto_Compra.cs" />
     <Compile Include="Models\UserCookie.cs" />
@@ -150,6 +153,7 @@
     <Compile Include="Models\VG.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\CompraController.cs" />
+    <Compile Include="UnifiedModels\ProductoUnifiedModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap-theme.css" />
@@ -204,6 +208,8 @@
     <Content Include="Views\Compra\VerCompras.cshtml" />
     <Content Include="Views\Carrito\VerCarrito.cshtml" />
     <Content Include="Views\Carrito\BorrarCarrito.cshtml" />
+    <Content Include="Views\Test\LastFragments.cshtml" />
+    <Content Include="Views\Compra\VerCompra.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -106,14 +106,16 @@
     #endregion
 
 
-
+    
 
 
 
 
 }
 <script>
-    window.location.href = '/Carrito/Show?json=@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)';
+    var json = "@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)";
+    var res = json.replace(/&quot;/g, '"');
+    window.location.href = "/Carrito/Show?json=" + res;
 </script>
 
 
