@@ -11,7 +11,7 @@ namespace Views.Managers
 {
     public class PCManager
     {
-        const string URL = "http://localhost:51221/api/PC/";
+        const string URL = Utilities.API_URL+"api/PC/";
 
         HttpClient GetClient(string token)
         {

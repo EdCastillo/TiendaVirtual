@@ -8,8 +8,8 @@ namespace Views.Managers
 {
     public class UsuarioManager
     {
-        const string UrlAuthenticate = "http://localhost:51221/api/login/authenticate/";
-        const string UrlRegister = "http://localhost:51221/api/login/ingresar/";
+        const string UrlAuthenticate = Utilities.API_URL + "api/login/authenticate/";
+        const string UrlRegister = Utilities.API_URL + "api/login/ingresar/";
 
         public async Task<Usuario> Validar(string username, string password)
         {

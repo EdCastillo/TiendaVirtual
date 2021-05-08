@@ -10,8 +10,9 @@ namespace Views.Managers
 {
     public class CarritoManager
     {
-        const string URL = "http://localhost:51221/api/PCAR/";
-        const string UrlIngresar = "http://localhost:51221/api/pcar/insertar/";
+
+        const string URL = Utilities.API_URL+"api/PCAR/";
+        const string UrlIngresar = Utilities.API_URL+"api/pcar/insertar/";
         HttpClient GetClient(string token)
         {
             HttpClient client = new HttpClient();

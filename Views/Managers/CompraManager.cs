@@ -12,9 +12,9 @@ namespace Views.Managers
 {
     public class CompraManager
     {
-        const string URL= "http://localhost:51221/api/Compra/";
-        const string URLgetByID = "http://localhost:51221/api/compra/COM_ID?id=";
-        const string UrlIngresar = "http://localhost:51221/api/compra/ingresar/";
+        public const string URL= Utilities.API_URL+"api/Compra/";
+        const string URLgetByID = Utilities.API_URL+"api/compra/COM_ID?id=";
+        const string UrlIngresar = Utilities.API_URL+"api/compra/ingresar/";
 
         HttpClient GetClient(string token)
         {

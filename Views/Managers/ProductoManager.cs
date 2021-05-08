@@ -9,8 +9,8 @@ namespace Views.Managers
 {
     public class ProductoManager
     {
-        const string URL = "http://localhost:51221/api/Producto/";
-        const string UrlIngresar = "http://localhost:51221/api/producto/ingresar/";
+        const string URL = Utilities.API_URL+"/api/Producto/";
+        const string UrlIngresar = Utilities.API_URL+"api/producto/ingresar/";
         HttpClient GetClient(string token)
         {
             HttpClient client = new HttpClient();

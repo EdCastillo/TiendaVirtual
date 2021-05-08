@@ -137,6 +137,7 @@
     <Compile Include="Managers\PCManager.cs" />
     <Compile Include="Managers\ProductoManager.cs" />
     <Compile Include="Managers\UsuarioManager.cs" />
+    <Compile Include="Managers\Utilities.cs" />
     <Compile Include="Models\Carrito.cs" />
     <Compile Include="Models\Compra.cs" />
     <Compile Include="UnifiedModels\CompraUnifiedModel.cs" />

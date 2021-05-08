@@ -33,6 +33,9 @@ namespace Views.Controllers
                 if (Valid=="needLogin") {
                     return View(new PopUp { Estado = "true", Titulo = "Hola!", Body = "Necesitas iniciar sesion para acceder a tus compras!" });
                 }
+                if (Valid == "Close") {
+                    return View(new PopUp { Estado = "true", Titulo = "Sesion cerrada!", Body = "La sesion se ha cerrado exitosamente!" });
+                }
                 else
                 {
                     return View(new PopUp { Estado = "false", Titulo = "null", Body = "null" });
