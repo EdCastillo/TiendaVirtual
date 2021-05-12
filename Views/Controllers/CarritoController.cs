@@ -19,9 +19,10 @@ namespace Views.Controllers
             {
                 int idUser = Int32.Parse(userID);
                 CarritoManager manager = new CarritoManager();
-                var response = await manager.Ingresar(new Producto_Carrito { US_ID = idUser, CAR_PRO_CANTIDAD = cantidad, PRO_ID = id,PCR_ID=0 }, token);
+                var response = await manager.Ingresar(new Producto_Carrito { US_ID = idUser, CAR_PRO_CANTIDAD = cantidad, PRO_ID = id }, token);
+                carrito.PCR_ID = response.PCR_ID;
                 carrito.US_ID = Int32.Parse(userID);
-                return View(carrito);
+                return View(response);
             }
             catch
             {
@@ -37,7 +38,11 @@ namespace Views.Controllers
         public async Task<ActionResult> VerCarrito(string json) {
             if (json.Equals("[]"))
             {
-                return View();
+                dynamic dynamic = new ExpandoObject();
+                dynamic.List = new List<ProductoCarritoUnifiedModel>();
+                dynamic.Validator = json;
+                return View(dynamic);
+                
             }
             else {
                 IEnumerable<Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<IEnumerable<Producto_Carrito>>(json);
@@ -57,7 +62,10 @@ namespace Views.Controllers
                     model.producto.PRO_ID = i.PRO_ID;
                     productoList.Add(model);
                 }
-                return View(productoList);
+                dynamic dynamic = new ExpandoObject();
+                dynamic.List = productoList;
+                dynamic.Validator = json;
+                return View(dynamic);
             }
         }
 

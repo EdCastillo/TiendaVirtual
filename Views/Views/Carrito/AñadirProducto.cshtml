@@ -20,22 +20,22 @@
     else
     {
 
-
-
-
         List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
         List<Views.Models.Producto_Carrito> tempList = new List<Views.Models.Producto_Carrito>();
+        bool flag = false;
         foreach (var i in list) {
             if (i.PRO_ID == Model.PRO_ID)
             {
-                tempList.Add(new Views.Models.Producto_Carrito { PRO_ID = Model.PRO_ID, CAR_PRO_CANTIDAD = Model.CAR_PRO_CANTIDAD });
-                break;
+                tempList.Add(new Views.Models.Producto_Carrito { PRO_ID = Model.PRO_ID, CAR_PRO_CANTIDAD = Model.CAR_PRO_CANTIDAD,PCR_ID=i.PCR_ID,US_ID=i.US_ID });
+                flag = true;
             }
             else {
                 tempList.Add(i);
             }
         }
-
+        if (!flag) {
+            tempList.Add(Model);
+        }
         //Lanzar datos
         reqCookies.Values["ListProduct"] = Newtonsoft.Json.JsonConvert.SerializeObject(tempList);
         Response.Cookies.Add(reqCookies);

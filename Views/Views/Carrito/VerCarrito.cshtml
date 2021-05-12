@@ -1,5 +1,6 @@
-﻿@model IEnumerable<Views.UnifiedModels.ProductoCarritoUnifiedModel>
+﻿@model dynamic
 @{
+    
     ViewBag.Title = "VerCarrito";
     Layout = null;
     #region CookiesConfiguration
@@ -124,9 +125,9 @@
     <div class="container bg-dark text-dark p-3 rounded-3">
 
         @{
-            if (user.Products.Count == 0)
+            if (user.Products.Count == 0 || Model.List.Count==0)
             {
-                <h2>No tienes productos en el carrito!</h2>
+                <h2 class="text-white text-center">No tienes productos en el carrito!</h2>
             }
             else
             {
@@ -142,7 +143,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
+                        @foreach (var item in Model.List)
                         {
                             <tr class="text-center">
 
@@ -185,6 +186,7 @@
                         <tr>
                             <td colspan="6">
                                 <button class="btn btn-outline-primary text-center" style="width:100%;align-self:center">Efectuar Compra</button>
+
                             </td>
                         </tr>
                     </tbody>
@@ -198,18 +200,26 @@
 
                 </table>
 
-
-
-
-
-
             }
 
         }
         <script>
+            URLValidator();
+            function URLValidator() {
+                var value ='@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)';
+                value = value.replace(/&quot;/g, '"');
+                var model = '@Model.Validator';
+                console.log(value); 
+                model = model.replace(/&quot;/g, '"');
+                console.log(model);
+                if ((value===model)) {
+                }
+                else {
+                    window.location.href = "/Carrito/Show?json=" + value;
+                }
+            }
+
             var btnBorrar = document.getElementById('borrarProducto');
-
-
             function borrarJS(pcrid,proID) {
                 if ('@user.Username' == 'Invitado') {
                     window.location.href = '/Carrito/Borrar?id=' + proID + '&token=notValid';
