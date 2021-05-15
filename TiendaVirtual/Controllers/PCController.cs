@@ -58,10 +58,11 @@ namespace TiendaVirtual.Controllers
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_COMPRA(COM_ID,PRO_ID,COM_PRO_CANTIDAD) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD);", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_COMPRA(COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_PRECIO_PRODUCTO_UNIDAD) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD,@CM_PRECIO_PRODUCTO_UNIDAD);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@COM_ID", producto.COM_ID);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.COM_PRO_CANTIDAD);
+                sqlCommand.Parameters.AddWithValue("@CM_PRECIO_PRODUCTO_UNIDAD", producto.CM_PRECIO_PRODUCTO_UNIDAD);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();

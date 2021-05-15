@@ -8,7 +8,7 @@ using TiendaVirtual.Models;
 namespace TiendaVirtual.Controllers
 {
     [RoutePrefix("api/compra")]
-    [Authorize]//Authorize
+    [AllowAnonymous]//Authorize
     public class CompraController : ApiController
     {
 
@@ -78,24 +78,40 @@ namespace TiendaVirtual.Controllers
                 return InternalServerError(ex);
             }
         }
-
+        private int GetCompraByPayPalToken(string id){
+                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                {
+                    SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID FROM COMPRA WHERE PayPal_Token=@ID", sqlConnection);
+                    sqlCommand.Parameters.AddWithValue("@ID", id);
+                    sqlConnection.Open();
+                    SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
+                    int result=0;
+                    while (sqlDataReader.Read())
+                    {
+                    result = sqlDataReader.GetInt32(0);
+                    }
+                    sqlConnection.Close();
+                return result;
+                }
+        }
         [HttpPost]
         [Route("ingresar")]
         public IHttpActionResult PublicIngresar(Compra compra)
         {
             if (compra == null) { return BadRequest(); }
-            if (PrivateIngresar(compra)) { return Ok(); }
+            if (PrivateIngresar(compra)) { return Ok(GetCompraByPayPalToken(compra.PayPal_Token)); }
             else { return InternalServerError(); }
         }
-
         private bool PrivateIngresar(Compra compra)
         {
             using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO COMPRA(COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO) VALUES(@COM_FECHA_COMPRA,@US_ID,@COM_LUGAR_DE_ENVIO);", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO COMPRA(COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO,PAYPAL_Token,PayPal_PayerID) VALUES(@COM_FECHA_COMPRA,@US_ID,@COM_LUGAR_DE_ENVIO,@PAYPAL_TOKEN,@PAYPAL_PAYERID);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@COM_FECHA_COMPRA", DateTime.Now);
                 sqlCommand.Parameters.AddWithValue("@US_ID", compra.US_ID);
                 sqlCommand.Parameters.AddWithValue("@COM_LUGAR_DE_ENVIO", compra.COM_LUGAR_DE_ENVIO);
+                sqlCommand.Parameters.AddWithValue("@PAYPAL_TOKEN",compra.PayPal_Token);
+                sqlCommand.Parameters.AddWithValue("@PAYPAL_PAYERID", compra.PayPal_PayerID);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();
@@ -103,8 +119,5 @@ namespace TiendaVirtual.Controllers
                 else { return false; }
             }
         }
-
-
-
     }
 }

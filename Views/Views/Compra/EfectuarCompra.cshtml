@@ -1,0 +1,162 @@
+﻿@model string 
+@{
+    ViewBag.Title = "EfectuarCompra";
+
+
+    int total = 0;
+    #region CookiesConfiguration_4.0_TotalCompraVariable
+    List<Views.UnifiedModels.ProductoCarritoUnifiedModel> listModel=new List<Views.UnifiedModels.ProductoCarritoUnifiedModel>();
+    //Cookies Configuration 4.0
+    Views.Models.UserCookie user = new Views.Models.UserCookie();
+    CreateOrValidate();
+    void CreateOrValidate()
+    {
+        HttpCookie comp = Request.Cookies["UserCookie"];
+        if (comp == null)
+        {
+            //Crear cookies si no existen
+            HttpCookie UserCookie = new HttpCookie("UserCookie");
+            UserCookie["US_ID"] = "0";
+            UserCookie["Username"] = "Invitado";
+            UserCookie["JsonToken"] = "NotValid";
+            UserCookie["ListProduct"] = "null";
+            UserCookie.Expires.AddHours(5);
+            Response.Cookies.Add(UserCookie);
+
+
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Producto_Carrito>();
+            }
+        }
+        else
+        {
+            //cargar cookies existentes
+            HttpCookie reqCookies = Request.Cookies["UserCookie"];
+            user = new Views.Models.UserCookie();
+            user.Username = reqCookies["Username"].ToString();
+            user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
+            user.JsonToken = reqCookies["JsonToken"].ToString();
+            //Variable
+            listModel = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.UnifiedModels.ProductoCarritoUnifiedModel>>(reqCookies["TotalDeCompra"].ToString());
+            //--
+            if (!reqCookies["ListProduct"].ToString().Equals("null"))
+            {
+                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+                user.Products = list;
+            }
+            else
+            {
+                user.Products = new List<Views.Models.Producto_Carrito>();
+            }
+        }
+    }
+    #endregion
+    foreach (var i in listModel) {
+        total += (int)i.producto.PRO_PRECIO * i.CAR_PRO_CANTIDAD;
+    }
+    Views.Models.TipoDeCambio tipoDeCambio = new Views.Models.TipoDeCambio();
+    tipoDeCambio = System.Threading.Tasks.Task.Run(() => getTipodeCambio()).Result;
+    string URL = System.Threading.Tasks.Task.Run(() => getRoute(Math.Ceiling((decimal)((total / 610) + 0.01)).ToString())).Result;
+    async System.Threading.Tasks.Task<Views.Models.TipoDeCambio> getTipodeCambio() {
+        return await Views.Managers.Utilities.GetTipoDeCambio();
+    }
+    async System.Threading.Tasks.Task<string> getRoute(string amount)
+    {
+        Views.Managers.PayPalManager manager = new Views.Managers.PayPalManager();
+        string result = await manager.GetRouteByAmount(amount.ToString());
+        return result;
+    }
+}
+<body>
+    
+    <div class="row">
+        <div class="col-lg-8 col-sm-12">
+            <div class="container bg-dark text-white rounded-3">
+                <h4 class="display-4 text-center">EfectuarCompra</h4>
+                <table class="table bg-white rounded-3 text-center">
+                    <thead>
+                        <tr>
+                            <td>
+                                Nombre
+                            </td>
+
+                            <td>
+                                Cantidad
+                            </td>
+
+                            <td>
+                                Precio
+                            </td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{ 
+                            foreach (var i in listModel) {
+                            <tr>
+                                <td>
+                                    @i.producto.PRO_NOMBRE
+                                </td>
+                                <td>
+                                    @i.producto.PRO_CANTIDAD_UNIDADES
+                                </td>
+                                <td>
+                                    @((int)i.producto.PRO_PRECIO)
+                                </td>
+                            </tr>
+                            }
+                        }
+                        <tr>
+                            <td colspan="3">
+                                <h4 class="display-4">
+                                    Total: ₡@((int)total)
+                                </h4>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <h4 class="display-4" style="font-size:30px">Proceder a pagar con PayPal</h4>
+                                <button onclick='window.location.href=@URL' class="center-block">
+                                    <div type="hidden" name="hosted_button_id" value="R2539TDZGU5TA">
+                                        <img type="image" src="https://www.paypalobjects.com/es_XC/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal - The safer, easier way to pay online!">
+                                        <img alt="" border="0" src="https://www.paypalobjects.com/es_XC/i/scr/pixel.gif" width="1" height="1">
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-lg-4 col-sm-12"  >
+            <div class="container  bg-dark text-white  rounded-3" >
+                <div class="row">
+                    <div class="row">
+                        <div class="row">
+                            <h4 class="display-4  text-white text-center" style="font-size:40px">Tipo de Cambio</h4>
+                        </div>
+                        <div class="row">
+                            <h4 class="display-4 text-center center-block" >CR-USD</h4>
+                        </div>
+                    </div>
+                    <div class="row text-center">
+                        <div class="col">Venta: @tipoDeCambio.venta</div>
+                        <div class="col">Compra: @tipoDeCambio.compra</div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+

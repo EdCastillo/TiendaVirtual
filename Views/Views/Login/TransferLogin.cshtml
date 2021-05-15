@@ -1,20 +1,17 @@
-﻿@Model dynamic;
+﻿@model dynamic
 @{
-    ViewBag.Title = "Authorize";
+    ViewBag.Title = "TransferLogin";
     Layout = null;
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     HttpCookie reqCookies = Request.Cookies["UserCookie"];
     reqCookies.Values["US_ID"] = Model.Usuario.US_ID.ToString();
     reqCookies.Values["Username"] = Model.Usuario.US_USUARIO;
     reqCookies.Values["JsonToken"] = Model.Usuario.token;
-
     reqCookies.Values["ListProduct"] = Model.List;
-
-
     reqCookies.Expires.AddHours(24);
     Response.Cookies.Add(reqCookies);
 }
 <script>
-    window.location.href = "/Login?Valid=true";
+    window.location.href = '/Carrito/VerCarrito';
 </script>
 

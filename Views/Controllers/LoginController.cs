@@ -46,6 +46,18 @@ namespace Views.Controllers
                 return View(new PopUp { Estado = "false", Titulo = "null", Body = "null" });
             }
         }
+        public async Task<ActionResult> TransferLogin(string username,string password) {
+            UsuarioManager manager = new UsuarioManager();
+            Usuario usuario = await manager.Validar(username, password);
+            if (usuario == null)
+            {
+                return Redirect("~/Login?Valid=false");
+            }
+            else {
+                return View(usuario);
+            }
+        }
+
         public async Task<ActionResult> Registrar(string nombre, string correo, string usuario, string contrasena)
         {
             Console.WriteLine(nombre,correo,usuario,contrasena);
@@ -60,7 +72,25 @@ namespace Views.Controllers
                 return Redirect("~/Login?Valid=RNotValid");
             }
         }
-
+        public async Task<ActionResult> RegistrarTransfer(string nombre, string correo, string usuario, string contrasena)
+        {
+            if (!(nombre == null || correo == null || usuario == null || contrasena == null))
+            {
+                UsuarioManager manager = new UsuarioManager();
+                var result = await manager.Registrar(new Usuario { US_NOMBRE = nombre, US_CORREO = correo, US_CONTRASENA = contrasena, US_USUARIO = usuario });
+                UsuarioManager usManager = new UsuarioManager();
+                Usuario user = await usManager.Validar(usuario, contrasena);
+                dynamic model = new ExpandoObject();
+                return View(user);
+            }
+            else
+            {
+                return Redirect("~/Login?Valid=RNotValid");
+            }
+        }
+        public ActionResult CuentaTransfer() {
+            return View();
+        }
 
         public async Task<ActionResult> Authorize(string username, string password)
         {

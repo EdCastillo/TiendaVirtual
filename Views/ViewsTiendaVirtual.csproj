@@ -134,12 +134,14 @@
     <Compile Include="Managers\CarritoManager.cs" />
     <Compile Include="Managers\CompraManager.cs" />
     <Compile Include="Managers\CookiesManager.cs" />
+    <Compile Include="Managers\PayPalManager.cs" />
     <Compile Include="Managers\PCManager.cs" />
     <Compile Include="Managers\ProductoManager.cs" />
     <Compile Include="Managers\UsuarioManager.cs" />
     <Compile Include="Managers\Utilities.cs" />
     <Compile Include="Models\Carrito.cs" />
     <Compile Include="Models\Compra.cs" />
+    <Compile Include="Models\TipoDeCambio.cs" />
     <Compile Include="UnifiedModels\CompraUnifiedModel.cs" />
     <Compile Include="Models\Imagen.cs" />
     <Compile Include="Models\LoginRequest.cs" />
@@ -211,6 +213,11 @@
     <Content Include="Views\Carrito\BorrarCarrito.cshtml" />
     <Content Include="Views\Test\LastFragments.cshtml" />
     <Content Include="Views\Compra\VerCompra.cshtml" />
+    <Content Include="Views\Compra\EfectuarCompra.cshtml" />
+    <Content Include="Views\Compra\CapturarCompra.cshtml" />
+    <Content Include="Views\Login\CuentaTransfer.cshtml" />
+    <Content Include="Views\Login\RegistrarTransfer.cshtml" />
+    <Content Include="Views\Login\TransferLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

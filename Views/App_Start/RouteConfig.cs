@@ -16,12 +16,6 @@ namespace Views
 
             //LOGIN CONTROLLER
             routes.MapRoute(
-                name: "LoginRoutes",
-                url: "Login/{action}",
-                defaults: new { controller = "Login" }
-                );
-
-            routes.MapRoute(
                 name: "Login", url: "Login",
                 defaults: new { controller = "Login", action = "Login" }
             );
@@ -32,6 +26,18 @@ namespace Views
             routes.MapRoute(
                 name: "Logout", url: "Login/logout",
                 defaults: new { controller = "Login", action = "Logout" }
+            );
+            routes.MapRoute(
+                name: "CuentaTransfer", url: "Login/CuentaTransfer",
+                defaults: new { controller = "Login", action = "CuentaTransfer" }
+            );
+            routes.MapRoute(
+                name: "CreateTransfer", url: "Login/TransferCompra",
+                defaults: new { controller = "Login", action = "RegistrarTransfer" }
+            );
+            routes.MapRoute(
+                name: "LoginTransfer", url: "Login/TransferLogin",
+                defaults: new { controller = "Login", action = "TransferLogin" }
             );
 
             //GENERAL
@@ -83,6 +89,16 @@ namespace Views
                 name:"VerCompra",
                 url:"Usuario/Compra/VerCompra",
                 defaults:new{controller="Compra",action="VerCompra"});
+            routes.MapRoute(
+                name: "EfectuarCompra",
+                url: "EfectuarCompra",
+                defaults: new { controller = "Compra", action = "EfectuarCompra" }
+            );
+            routes.MapRoute(
+                name: "CapturarCompra",
+                url: "Compra/Exitosa",
+                defaults: new { controller = "Compra", action = "CapturarCompra" }
+            );
 
 
 

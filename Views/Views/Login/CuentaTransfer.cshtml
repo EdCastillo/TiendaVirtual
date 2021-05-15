@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "CuentaTransfer";
+}
+<div class="container bg-dark text-white rounded-3" style="margin-top:10px">
+    <div class="row">
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h5 class="display-4 text-white">Iniciar sesion</h5>
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                <input class="form-control" id="userLogin" placeholder="Nombre" />
+            </div>
+            <div class="form-group">
+                <label>Contraseña</label>
+                <input type="password" class="form-control" id="passwordLogin" placeholder="Contraseña" />
+            </div>
+            <div style="margin-top:5px;padding-bottom:10px">
+                <button class="btn btn-primary" style="width:100%" id="buttonLogin">Iniciar sesion</button>
+            </div>
+        </div>
+        <div class="col-lg-6 col-md-12 col-sm-12">
+            <h5 class="display-4 text-white">Registro</h5>
+            <div class="form-group">
+                <label>Nombre Completo</label>
+                <input class="form-control" id="NombreTB" placeholder="Nombre" />
+            </div>
+            <div class="form-group">
+                <label>Nombre de usuario</label>
+                <input class="form-control" id="UsernameTB" placeholder="Nombre de Usuario">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputEmail1">Correo Electronico</label>
+                <input class="form-control" id="EmailTB" placeholder="Correo">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Contraseña</label>
+                <input type="password" class="form-control" id="passwordTB" placeholder="Contraseña">
+            </div>
+            <div style="margin-top:5px;padding-bottom:10px">
+                <button class="btn btn-primary" style="width:100%" id="buttonCrear">Crear cuenta</button>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script>
+    var buttonCrear = document.getElementById('buttonCrear');
+    buttonCrear.onclick = Registrar;
+    var buttonLogin = document.getElementById('buttonLogin');
+    buttonLogin.onclick = Validar;
+    function Validar() {
+        var username=document.getElementById('userLogin').value;
+        var password = document.getElementById('passwordLogin').value;
+        window.location.href = '/Login/TransferLogin?username=' + username + '&password=' + password;
+    }
+
+    function Registrar() {
+        var nombre = document.getElementById('NombreTB').value;
+        var usuario = document.getElementById('UsernameTB').value;
+        var correo = document.getElementById('EmailTB').value;
+        var contrasena = document.getElementById('passwordTB').value;
+        const params = 'nombre=' + nombre + '&correo=' + correo + '&usuario=' + usuario + '&contrasena=' + contrasena;
+        window.location.href = '/Login/TransferCompra?'+params;
+    }
+</script>
+
+

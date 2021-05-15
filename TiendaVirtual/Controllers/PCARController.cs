@@ -117,7 +117,40 @@ namespace TiendaVirtual.Controllers
             }
 
         }
-
+        [HttpDelete]
+        [Route("deleteByUser")]
+        public IHttpActionResult DeleteAllByUserID(int id) {
+            if (id == 0)
+            {
+                return BadRequest();
+            }
+            else {
+                if (PrivateDeleteByUser(id)) {
+                    return Ok();   
+                }
+                else
+                {
+                    return InternalServerError();
+                }
+            }
+        
+        }
+        private bool PrivateDeleteByUser(int id) {
+            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+                SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO_CARRITO WHERE US_ID=@ID",sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@ID",id);
+                sqlConnection.Open();
+                int filasAfectadas = sqlCommand.ExecuteNonQuery();
+                sqlConnection.Close();
+                if (filasAfectadas > 0)
+                {
+                    return true;
+                }
+                else {
+                    return false;
+                }
+            }
+        }
 
 
         [HttpDelete]

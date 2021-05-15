@@ -1,11 +1,7 @@
-﻿
-@model IEnumerable<Views.Models.Producto>
-
+﻿@model dynamic 
 @{
-
-    ViewBag.Title = "AllProducts";
-
-    #region CookiesConfiguration
+    #region CookiesConfiguration_4.0_TotalCompraVariable
+    List<Views.UnifiedModels.ProductoCarritoUnifiedModel> listModel = new List<Views.UnifiedModels.ProductoCarritoUnifiedModel>();
     //Cookies Configuration 4.0
     Views.Models.UserCookie user = new Views.Models.UserCookie();
     CreateOrValidate();
@@ -48,6 +44,9 @@
             user.Username = reqCookies["Username"].ToString();
             user.US_ID = Int32.Parse(reqCookies["US_ID"].ToString());
             user.JsonToken = reqCookies["JsonToken"].ToString();
+            //Variable
+            listModel = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.UnifiedModels.ProductoCarritoUnifiedModel>>(reqCookies["TotalDeCompra"].ToString());
+            //--
             if (!reqCookies["ListProduct"].ToString().Equals("null"))
             {
                 List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
@@ -60,51 +59,34 @@
         }
     }
     #endregion
+    ViewBag.Title = "CapturarCompra";
+    Views.Models.Compra compra = new Views.Models.Compra {PayPal_PayerID=Model.PayerId, PayPal_Token=Model.token,US_ID=user.US_ID,COM_LUGAR_DE_ENVIO="Alajuela",COM_FECHA_COMPRA=DateTime.Now,COM_ID=0 };
 
-}
-<head>
-    <title>Tienda Virtual|Todos los productos</title>
-</head>
-<body>
-    <div class="container">
-        <h2 class="text-center col-lg-12 col-md-12 col-sm-12">
-            Productos
-        </h2>
-        <div class="row">
-            @foreach (var item in Model)
-            {
-                
-                <div class="col-12">
-                    <button class="btn-block btn btn-lg" style="width:100%" onclick="window.location.href='ShowProduct?id=@Html.DisplayFor(modelItem => item.PRO_ID)'">
-                        <div class="container p-3 my-3 bg-dark text-white">
-                            <table class="table">
-                                <tr class="text-white text-center">
-                                    <td class="col-4">
-                                        @Html.DisplayFor(modelItem => item.PRO_NOMBRE)
-                                    </td>
-                                    <td class="col-4">
-                                        @Html.DisplayFor(modelItem => item.PRO_MARCA)
-                                    </td>
-                                    <td class="col-4">
-                                        ₡@Decimal.ToInt32(Convert.ToDecimal(Html.DisplayFor(modelItem => item.PRO_PRECIO).ToString()))
-                                    </td>
-                                </tr>
-                            </table>
-                        </div>
-                    </button>
-                </div>
-            }
-        </div>
-    </div>
-    <script>
-        function goToCompras() {
-            if ('@user.Username' == 'Invitado') {
-                window.location.href = '/Login?Valid=needLogin';
-            }
-            else {
-                window.location.href = "/Usuario/Compras?id=@user.US_ID&token=@user.JsonToken";
-            }
+    int COM_ID=System.Threading.Tasks.Task.Run(() => setCompra()).Result;
+    async System.Threading.Tasks.Task<int> setCompra() {
+        Views.Managers.CompraManager manager = new Views.Managers.CompraManager();
+        var id=await manager.Insertar(compra, user.JsonToken);
+        return id;
+    }
+    Views.Managers.PCManager pCManager = new Views.Managers.PCManager();
+    System.Threading.Tasks.Task.Run(() => insertPCS());
+    async System.Threading.Tasks.Task insertPCS() {
+        foreach (var item in listModel)
+        {
+            await pCManager.Insertar(new Views.Models.Producto_Compra { COM_ID = COM_ID, CM_PRECIO_PRODUCTO_UNIDAD = (int)item.producto.PRO_PRECIO, COM_PRO_CANTIDAD = item.CAR_PRO_CANTIDAD, PRO_ID = item.producto.PRO_ID }, user.JsonToken);
         }
-    </script>
-</body>
+    }
+    HttpCookie tempCookie = Request.Cookies["UserCookie"];
+    tempCookie["ListProduct"] = "null";
+    Response.Cookies.Add(tempCookie);
+    System.Threading.Tasks.Task.Run(()=>borrarCarritoByUserID());
+
+    async System.Threading.Tasks.Task borrarCarritoByUserID() {
+        Views.Managers.CarritoManager carritoManager = new Views.Managers.CarritoManager();
+        await carritoManager.DeleteAllByUserId(user.US_ID.ToString(),user.JsonToken);
+    }
+}
+<script>
+    window.location.href = '/Usuario/Compra/VerCompra?id=@COM_ID&token=@user.JsonToken';
+</script>
 

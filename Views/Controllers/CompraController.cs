@@ -37,6 +37,10 @@ namespace Views.Controllers
             }
             return View(model);
         }
+        public async Task<ActionResult> EfectuarCompra() {
+            return View();
+        }
+
         public async Task<ActionResult> VerCompra(string id, string token) {
             CompraManager manager = new CompraManager();
             PCManager pcManager = new PCManager();
@@ -54,6 +58,11 @@ namespace Views.Controllers
             return View(model);
         }
 
-
+        public ActionResult CapturarCompra(string token, string PayerID) {
+            dynamic model = new ExpandoObject();
+            model.token = token;
+            model.PayerId = PayerID;
+            return View(model);
+        }
     }
 }

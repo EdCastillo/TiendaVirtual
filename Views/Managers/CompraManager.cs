@@ -34,14 +34,12 @@ namespace Views.Managers
             string result=await client.GetStringAsync(URL+id);
             return JsonConvert.DeserializeObject<IEnumerable<Compra>>(result);
         }
-        public async Task InsertarAuth(Compra compra,string token) {
-            HttpClient client = GetClient(token);
-            await client.PostAsync(UrlIngresar, new StringContent(JsonConvert.SerializeObject(compra), Encoding.UTF8, "application/json"));
-        }
-        public async Task InsertarNoAuth(Compra compra, string token)
+        
+        public async Task<int> Insertar(Compra compra, string token)
         {
             HttpClient client = GetClient(token);
-            await client.PostAsync(UrlIngresar, new StringContent(JsonConvert.SerializeObject(compra), Encoding.UTF8, "application/json"));
+            var result=await client.PostAsync(UrlIngresar, new StringContent(JsonConvert.SerializeObject(compra), Encoding.UTF8, "application/json"));
+            return Int32.Parse(await result.Content.ReadAsStringAsync());
         }
         public async Task<Compra> GetCompra(string id, string token) {
             HttpClient client = GetClient(token);
