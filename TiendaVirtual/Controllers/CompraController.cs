@@ -8,7 +8,7 @@ using TiendaVirtual.Models;
 namespace TiendaVirtual.Controllers
 {
     [RoutePrefix("api/compra")]
-    [AllowAnonymous]//Authorize
+    [Authorize]//Authorize
     public class CompraController : ApiController
     {
 

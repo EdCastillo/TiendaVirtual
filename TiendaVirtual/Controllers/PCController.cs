@@ -7,7 +7,7 @@ using TiendaVirtual.Models;
 namespace TiendaVirtual.Controllers
 {
 
-    [AllowAnonymous]//Authorize
+    [Authorize]//Authorize
     [RoutePrefix("api/pc")]
     public class PCController : ApiController
     {

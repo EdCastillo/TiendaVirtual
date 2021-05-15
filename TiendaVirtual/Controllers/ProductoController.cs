@@ -87,7 +87,7 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]//Authorize
+        [Authorize]//Authorize
         [Route("ingresar")]
         public IHttpActionResult PublicInsert(Producto producto)
         {
