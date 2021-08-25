@@ -9,12 +9,17 @@ namespace Views
         {
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             //TEST PAGE
+            
             routes.MapRoute(
                 name: "Test",
                 url: "Test",
                 defaults: new { controller = "Test", action = "Index" });
 
             //LOGIN CONTROLLER
+            routes.MapRoute(
+                name: "Authorize",
+                url: "Login/Authorize",
+                defaults: new { controller = "Login", action = "Authorize" });
             routes.MapRoute(
                 name: "Login", url: "Login",
                 defaults: new { controller = "Login", action = "Login" }

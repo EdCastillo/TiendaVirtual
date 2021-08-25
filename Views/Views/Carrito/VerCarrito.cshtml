@@ -128,6 +128,26 @@
             }
             <tr>
                 <td colspan="6">
+                    <div class="row center-block">
+                        <div class="row text-center">
+                            <div class="text-center display-4">Metodo de pago</div>
+                        </div>
+                        <div class="row text-center center-block">
+                            <div class="col">
+                                <input class="form-check-input" type="radio" name="PaypalRadio" id="PAYPAL">
+                                <label class="form-check-label" for="PaypalRadio">
+                                    PayPal
+                                </label>
+                            </div>
+                            <div class="col">
+                                <input class="form-check-input" type="radio" name="PagoAEntregaRadio" id="PagoAentrega">
+                                <label class="form-check-label" for="PagoAEntregaRadio">
+                                    Pago contra entrega
+                                </label>
+                            </div>
+                        </div>
+
+                    </div>
                     <button class="btn btn-outline-primary text-center" style="width:100%;align-self:center" onclick="AccountCreatedValidator()">Efectuar Compra</button>
                 </td>
             </tr>
@@ -165,9 +185,8 @@
                 var value ='@Newtonsoft.Json.JsonConvert.SerializeObject(user.Products)';
                 value = value.replace(/&quot;/g, '"');
                 var model = '@Model.Validator';
-                console.log(value); 
                 model = model.replace(/&quot;/g, '"');
-                console.log(model);
+
                 if ((value===model)) {
                 }
                 else {

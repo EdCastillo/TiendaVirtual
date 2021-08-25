@@ -16,7 +16,7 @@ namespace TiendaVirtual.Controllers
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM PRODUCTO_CARRITO WHERE US_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -56,7 +56,7 @@ namespace TiendaVirtual.Controllers
         {
             Producto_Carrito car=new Producto_Carrito();
             car.PCR_ID = 0;
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT PCR_ID,US_ID,PRO_ID FROM PRODUCTO_CARRITO WHERE PRO_ID=@PRO_ID AND US_ID=@US_ID", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
                 sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
@@ -69,7 +69,7 @@ namespace TiendaVirtual.Controllers
             }
             if (car.PCR_ID == 0)
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_CARRITO(PRO_ID,CAR_PRO_CANTIDAD,US_ID) VALUES(@PRO_ID,@COM_PRO_CANTIDAD,@US_ID);", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
@@ -83,7 +83,7 @@ namespace TiendaVirtual.Controllers
                 }
             }
             else {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                     SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO_CARRITO SET CAR_PRO_CANTIDAD=@CANTIDAD WHERE PCR_ID=@ID", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", car.PCR_ID);
                     sqlCommand.Parameters.AddWithValue("@CANTIDAD", producto.CAR_PRO_CANTIDAD);
@@ -101,7 +101,7 @@ namespace TiendaVirtual.Controllers
             
         }
         public int getPCRByParameters(int US_ID, int PRO_ID) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                 int result = 0;
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT PCR_ID,US_ID,PRO_ID FROM PRODUCTO_CARRITO WHERE PRO_ID=@PRO_ID AND US_ID=@US_ID", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", PRO_ID);
@@ -136,7 +136,7 @@ namespace TiendaVirtual.Controllers
         
         }
         private bool PrivateDeleteByUser(int id) {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString)) {
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                 SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO_CARRITO WHERE US_ID=@ID",sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID",id);
                 sqlConnection.Open();
@@ -162,7 +162,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateDelete(int id)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"DELETE Producto_Carrito WHERE PCR_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -183,7 +183,7 @@ namespace TiendaVirtual.Controllers
         }
         public bool PrivateUpdate(Producto_Carrito producto)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"UPDATE Producto_Carrito SET PRO_ID=@PRO_ID,CAR_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE PCR_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", producto.PCR_ID);

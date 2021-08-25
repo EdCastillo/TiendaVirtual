@@ -75,7 +75,7 @@
     async System.Threading.Tasks.Task<string> getRoute(string amount)
     {
         Views.Managers.PayPalManager manager = new Views.Managers.PayPalManager();
-        string result = await manager.GetRouteByAmount(amount.ToString());
+        string result = await manager.GetRouteByAmount(amount.ToString(),user.JsonToken);
         return result;
     }
 }

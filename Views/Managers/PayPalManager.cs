@@ -17,9 +17,16 @@ namespace Views.Managers
             client.DefaultRequestHeaders.Add("Accept", "application/json");
             return client;
         }
+        HttpClient GetAuthorizedClient(string token)
+        {
+            HttpClient client = new HttpClient();
+            client.DefaultRequestHeaders.Add("Accept", "application/json");
+            client.DefaultRequestHeaders.Add("Authorization",token);
+            return client;
+        }
 
-        public async Task<string> GetRouteByAmount(string amount) {
-            HttpClient client = GetClient();
+        public async Task<string> GetRouteByAmount(string amount,string token) {
+            HttpClient client = GetAuthorizedClient(token);
             var response=await client.PostAsync(URL + amount,null);
             return response.Content.ReadAsStringAsync().Result;
         }

@@ -96,15 +96,5 @@
             }
         </div>
     </div>
-    <script>
-        function goToCompras() {
-            if ('@user.Username' == 'Invitado') {
-                window.location.href = '/Login?Valid=needLogin';
-            }
-            else {
-                window.location.href = "/Usuario/Compras?id=@user.US_ID&token=@user.JsonToken";
-            }
-        }
-    </script>
 </body>
 

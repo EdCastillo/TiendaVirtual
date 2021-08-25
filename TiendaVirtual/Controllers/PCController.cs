@@ -18,7 +18,7 @@ namespace TiendaVirtual.Controllers
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_ID,CM_PRECIO_PRODUCTO_UNIDAD FROM PRODUCTO_COMPRA WHERE COM_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -56,7 +56,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateInsert(Producto_Compra producto)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_COMPRA(COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_PRECIO_PRODUCTO_UNIDAD) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD,@CM_PRECIO_PRODUCTO_UNIDAD);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@COM_ID", producto.COM_ID);
@@ -81,7 +81,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateDelete(int id)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO_COMPRA WHERE CM_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@CM_ID", id);
@@ -102,7 +102,7 @@ namespace TiendaVirtual.Controllers
         }
         public bool PrivateUpdate(Producto_Compra producto)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO_COMPRA SET COM_ID=@COM_ID,PRO_ID=@PRO_ID,COM_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE CM_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", producto.CM_ID);

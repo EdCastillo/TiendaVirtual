@@ -11,7 +11,11 @@ namespace Views.Managers
 {
     public class Utilities
     {
-        public const string API_URL= "http://localhost:51221/";
+        private const string LOCAL_API_ROUTE = "http://localhost:51221/";
+        private const string HOST_API_ROUTE = "http://eduardoleocr-002-site1.ctempurl.com/";
+        public const string API_URL= LOCAL_API_ROUTE;
+
+
         public static async Task<TipoDeCambio> GetTipoDeCambio() {
             HttpClient client = new HttpClient();
             string response=await client.GetStringAsync("https://tipodecambio.paginasweb.cr/api");

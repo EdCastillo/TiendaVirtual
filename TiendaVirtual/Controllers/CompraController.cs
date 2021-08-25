@@ -19,7 +19,7 @@ namespace TiendaVirtual.Controllers
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO FROM COMPRA WHERE COM_ID=@ID", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -52,7 +52,7 @@ namespace TiendaVirtual.Controllers
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO FROM COMPRA WHERE US_ID=@ID", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -79,7 +79,7 @@ namespace TiendaVirtual.Controllers
             }
         }
         private int GetCompraByPayPalToken(string id){
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID FROM COMPRA WHERE PayPal_Token=@ID", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -104,7 +104,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateIngresar(Compra compra)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO COMPRA(COM_FECHA_COMPRA,US_ID,COM_LUGAR_DE_ENVIO,PAYPAL_Token,PayPal_PayerID) VALUES(@COM_FECHA_COMPRA,@US_ID,@COM_LUGAR_DE_ENVIO,@PAYPAL_TOKEN,@PAYPAL_PAYERID);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@COM_FECHA_COMPRA", DateTime.Now);

@@ -13,8 +13,10 @@ namespace Views.Controllers
 {
     public class CompraController : Controller
     {
-        public async Task<ActionResult> VerCompras(int id,string token)
+        public async Task<ActionResult> VerCompras()
         {
+            int id =Int32.Parse(Session["ID"].ToString());
+            string token = Session["Token"].ToString();
             CompraManager manager = new CompraManager();
             PCManager pcManager = new PCManager();
             ProductoManager productoManager = new ProductoManager();

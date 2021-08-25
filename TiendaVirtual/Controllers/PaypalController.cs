@@ -13,6 +13,7 @@ using Newtonsoft.Json;
 
 namespace TiendaVirtual.Controllers
 {
+    [Authorize]
     public class PaypalController : ApiController
     {
         HttpClient GetClient() {
@@ -28,7 +29,6 @@ namespace TiendaVirtual.Controllers
         private const string Order_URL = "v2/checkout/orders";
 
 
-        [AllowAnonymous]
         [HttpPost]
         public async Task<IHttpActionResult> getPayPalRouteWithAmount(int amount) {
             if (APIToken.Equals("notValid")) {
@@ -85,7 +85,7 @@ namespace TiendaVirtual.Controllers
             var jObject = (JObject)JsonConvert.DeserializeObject(json);
             try
             {
-                if (String.IsNullOrEmpty(jObject["error"].ToString()))
+                if (jObject["error"]==null)
                 {
                     return true;
                 }

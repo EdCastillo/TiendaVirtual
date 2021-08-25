@@ -103,10 +103,11 @@ namespace Views.Controllers
             else
             {
                 dynamic model = new ExpandoObject();
-
                 model.Usuario = usuario;
                 CarritoManager managerC = new CarritoManager();
                 model.List =Newtonsoft.Json.JsonConvert.SerializeObject(await managerC.ObtenerCarrito(usuario.US_ID.ToString(),usuario.token));
+                Session["TOKEN"] = usuario.token;
+                Session["ID"] = usuario.US_ID;
                 return View(model);
             }
         }

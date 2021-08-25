@@ -18,7 +18,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateInsert(Imagen imagen)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO IMAGEN(PRO_ID,IMG_NOMBRE,IMG_FORMATO,IMG_FILE) VALUES(@PRO_ID,@IMG_NOMBRE,@IMG_FORMATO,@IMG_FILE);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@PRO_ID", imagen.PRO_ID);
@@ -41,7 +41,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateDelete(int id)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"DELETE IMAGEN WHERE IMG_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);

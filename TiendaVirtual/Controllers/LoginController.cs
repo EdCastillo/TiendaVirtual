@@ -43,7 +43,7 @@ namespace TiendaVirtual.Controllers
         }
         private Usuario GetUser(LoginRequest login)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT US_USUARIO,US_CONTRASENA,US_ID FROM USUARIO WHERE US_USUARIO=@USERNAME", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@USERNAME", login.Username);
@@ -72,7 +72,7 @@ namespace TiendaVirtual.Controllers
                 {
                     return BadRequest("Este nombre de usuario ya está en uso.");
                 }
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO USUARIO(US_NOMBRE,US_CORREO,US_USUARIO,US_CONTRASENA) VALUES(@US_NOMBRE,@US_CORREO,@US_USUARIO,@US_CONTRASENA);", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@US_NOMBRE", usuario.US_NOMBRE);
@@ -97,7 +97,7 @@ namespace TiendaVirtual.Controllers
 
         private Usuario GetUserByID(int id)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT US_ID,US_NOMBRE,US_CORREO,US_USUARIO FROM USUARIO WHERE US_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);

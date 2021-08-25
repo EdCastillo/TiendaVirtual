@@ -1,5 +1,7 @@
 ﻿@model dynamic 
+@using Newtonsoft.Json; 
 @{
+    
     #region CookiesConfiguration_4.0_TotalCompraVariable
     List<Views.UnifiedModels.ProductoCarritoUnifiedModel> listModel = new List<Views.UnifiedModels.ProductoCarritoUnifiedModel>();
     //Cookies Configuration 4.0
@@ -28,7 +30,7 @@
             user.JsonToken = reqCookies["JsonToken"].ToString();
             if (!reqCookies["ListProduct"].ToString().Equals("null"))
             {
-                List<Views.Models.Producto_Carrito> list = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
+                List<Views.Models.Producto_Carrito> list = JsonConvert.DeserializeObject<List<Views.Models.Producto_Carrito>>(reqCookies["ListProduct"].ToString());
                 user.Products = list;
             }
             else

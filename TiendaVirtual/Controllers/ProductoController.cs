@@ -20,7 +20,7 @@ namespace TiendaVirtual.Controllers
             if (id == 0) { return BadRequest(); }
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION FROM PRODUCTO WHERE PRO_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -57,7 +57,7 @@ namespace TiendaVirtual.Controllers
 
             try
             {
-                using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+                using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION FROM PRODUCTO;", sqlConnection);
                     sqlConnection.Open();
@@ -98,7 +98,7 @@ namespace TiendaVirtual.Controllers
 
         private bool PrivateInsert(Producto producto)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO(PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION) VALUES(@PRO_NOMBRE,@PRO_MARCA,@PRO_STOCK,@PRO_PRECIO,@PRO_DESCRIPCION);", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", producto.PRO_NOMBRE);
@@ -124,7 +124,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateDelete(int id)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO WHERE PRO_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);
@@ -146,7 +146,7 @@ namespace TiendaVirtual.Controllers
         }
         private bool PrivateUpdate(Producto producto)
         {
-            using (SqlConnection sqlConnection = new SqlConnection(ConfigurationManager.ConnectionStrings["Tienda"].ConnectionString))
+            using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO SET PRO_NOMBRE=@PRO_NOMBRE,PRO_MARCA=@PRO_MARCA,PRO_STOCK=@PRO_STOCK,PRO_PRECIO=@PRO_PRECIO,PRO_DESCRIPCION=@PRO_DESCRIPCION WHERE PRO_ID=@ID", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", producto.PRO_ID);
