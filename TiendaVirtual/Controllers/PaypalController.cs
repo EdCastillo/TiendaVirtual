@@ -49,8 +49,8 @@ namespace TiendaVirtual.Controllers
                 body.application_context.brand_name = "TiendaVirtual";
                 body.application_context.landing_page = "NO_PREFERENCE";
                 body.application_context.user_action = "PAY_NOW";
-                body.application_context.return_url = "http://localhost:52112/Compra/Exitosa";
-                body.application_context.cancel_url= "http://localhost:52112/Compra/Fallida";
+                body.application_context.return_url = "http://localhost:52112/COMPRA/Exitosa";
+                body.application_context.cancel_url= "http://localhost:52112/COMPRA/Fallida";
                 var response = await client.PostAsync(PayPal_API_URL+Order_URL, new StringContent(JsonConvert.SerializeObject(body), System.Text.Encoding.UTF8, "application/json"));
                 var validator = response.Content.ReadAsStringAsync().Result;
                 var json = (JObject)JsonConvert.DeserializeObject(response.Content.ReadAsStringAsync().Result);

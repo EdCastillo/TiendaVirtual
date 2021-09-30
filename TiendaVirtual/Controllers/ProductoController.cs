@@ -6,7 +6,7 @@ using TiendaVirtual.Models;
 
 namespace TiendaVirtual.Controllers
 {
-    [RoutePrefix("api/producto")]
+    [RoutePrefix("api/PRODUCTO")]
     public class ProductoController : ApiController
     {
 
@@ -25,11 +25,11 @@ namespace TiendaVirtual.Controllers
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION FROM PRODUCTO WHERE PRO_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
                     sqlConnection.Open();
-                    Producto producto = new Producto();
+                    PRODUCTO PRODUCTO = new PRODUCTO();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        producto = new Producto
+                        PRODUCTO = new PRODUCTO
                         {
                             PRO_ID = sqlDataReader.GetInt32(0),
                             PRO_NOMBRE = sqlDataReader.GetString(1),
@@ -40,8 +40,8 @@ namespace TiendaVirtual.Controllers
                         };
                     }
                     sqlConnection.Close();
-                    if (producto.PRO_ID == 0) { return BadRequest(); }
-                    else { return Ok(producto); }
+                    if (PRODUCTO.PRO_ID == 0) { return BadRequest(); }
+                    else { return Ok(PRODUCTO); }
                 }
             }
             catch
@@ -61,11 +61,11 @@ namespace TiendaVirtual.Controllers
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION FROM PRODUCTO;", sqlConnection);
                     sqlConnection.Open();
-                    List<Producto> productos = new List<Producto>();
+                    List<PRODUCTO> productos = new List<PRODUCTO>();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        productos.Add(new Producto
+                        productos.Add(new PRODUCTO
                         {
                             PRO_ID = sqlDataReader.GetInt32(0),
                             PRO_NOMBRE = sqlDataReader.GetString(1),
@@ -89,23 +89,23 @@ namespace TiendaVirtual.Controllers
         [HttpPost]
         [Authorize]//Authorize
         [Route("ingresar")]
-        public IHttpActionResult PublicInsert(Producto producto)
+        public IHttpActionResult PublicInsert(PRODUCTO PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateInsert(producto)) { return Ok(producto); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateInsert(PRODUCTO)) { return Ok(PRODUCTO); }
             else { return InternalServerError(); }
         }
 
-        private bool PrivateInsert(Producto producto)
+        private bool PrivateInsert(PRODUCTO PRODUCTO)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO(PRO_NOMBRE,PRO_MARCA,PRO_STOCK,PRO_PRECIO,PRO_DESCRIPCION) VALUES(@PRO_NOMBRE,@PRO_MARCA,@PRO_STOCK,@PRO_PRECIO,@PRO_DESCRIPCION);", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", producto.PRO_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@PRO_MARCA", producto.PRO_MARCA);
-                sqlCommand.Parameters.AddWithValue("@PRO_STOCK", producto.PRO_STOCK);
-                sqlCommand.Parameters.AddWithValue("@PRO_PRECIO", producto.PRO_PRECIO);
-                sqlCommand.Parameters.AddWithValue("@PRO_DESCRIPCION", producto.PRO_DESCRIPCION);
+                sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", PRODUCTO.PRO_NOMBRE);
+                sqlCommand.Parameters.AddWithValue("@PRO_MARCA", PRODUCTO.PRO_MARCA);
+                sqlCommand.Parameters.AddWithValue("@PRO_STOCK", PRODUCTO.PRO_STOCK);
+                sqlCommand.Parameters.AddWithValue("@PRO_PRECIO", PRODUCTO.PRO_PRECIO);
+                sqlCommand.Parameters.AddWithValue("@PRO_DESCRIPCION", PRODUCTO.PRO_DESCRIPCION);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();
@@ -138,23 +138,23 @@ namespace TiendaVirtual.Controllers
         }
         [HttpPut]
         [Authorize]//Authorize
-        public IHttpActionResult PublicUpdate(Producto producto)
+        public IHttpActionResult PublicUpdate(PRODUCTO PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateUpdate(producto)) { return Ok(); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateUpdate(PRODUCTO)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        private bool PrivateUpdate(Producto producto)
+        private bool PrivateUpdate(PRODUCTO PRODUCTO)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO SET PRO_NOMBRE=@PRO_NOMBRE,PRO_MARCA=@PRO_MARCA,PRO_STOCK=@PRO_STOCK,PRO_PRECIO=@PRO_PRECIO,PRO_DESCRIPCION=@PRO_DESCRIPCION WHERE PRO_ID=@ID", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ID", producto.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", producto.PRO_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@PRO_MARCA", producto.PRO_MARCA);
-                sqlCommand.Parameters.AddWithValue("@PRO_STOCK", producto.PRO_STOCK);
-                sqlCommand.Parameters.AddWithValue("@PRO_PRECIO", producto.PRO_PRECIO);
-                sqlCommand.Parameters.AddWithValue("@PRO_DESCRIPCION", producto.PRO_DESCRIPCION);
+                sqlCommand.Parameters.AddWithValue("@ID", PRODUCTO.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@PRO_NOMBRE", PRODUCTO.PRO_NOMBRE);
+                sqlCommand.Parameters.AddWithValue("@PRO_MARCA", PRODUCTO.PRO_MARCA);
+                sqlCommand.Parameters.AddWithValue("@PRO_STOCK", PRODUCTO.PRO_STOCK);
+                sqlCommand.Parameters.AddWithValue("@PRO_PRECIO", PRODUCTO.PRO_PRECIO);
+                sqlCommand.Parameters.AddWithValue("@PRO_DESCRIPCION", PRODUCTO.PRO_DESCRIPCION);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();

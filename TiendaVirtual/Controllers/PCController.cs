@@ -22,12 +22,12 @@ namespace TiendaVirtual.Controllers
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_ID,CM_PRECIO_PRODUCTO_UNIDAD FROM PRODUCTO_COMPRA WHERE COM_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
-                    List<Producto_Compra> productos = new List<Producto_Compra>();
+                    List<PRODUCTO_COMPRA> productos = new List<PRODUCTO_COMPRA>();
                     sqlConnection.Open();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        productos.Add(new Producto_Compra
+                        productos.Add(new PRODUCTO_COMPRA
                         {
                             COM_ID = sqlDataReader.GetInt32(0),
                             PRO_ID = sqlDataReader.GetInt32(1),
@@ -48,21 +48,21 @@ namespace TiendaVirtual.Controllers
         }
         [HttpPost]
         [Route("insertar")]
-        public IHttpActionResult PublicInsert(Producto_Compra producto)
+        public IHttpActionResult PublicInsert(PRODUCTO_COMPRA PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateInsert(producto)) { return Ok(); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateInsert(PRODUCTO)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        private bool PrivateInsert(Producto_Compra producto)
+        private bool PrivateInsert(PRODUCTO_COMPRA PRODUCTO)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_COMPRA(COM_ID,PRO_ID,COM_PRO_CANTIDAD,CM_PRECIO_PRODUCTO_UNIDAD) VALUES(@COM_ID,@PRO_ID,@COM_PRO_CANTIDAD,@CM_PRECIO_PRODUCTO_UNIDAD);", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@COM_ID", producto.COM_ID);
-                sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.COM_PRO_CANTIDAD);
-                sqlCommand.Parameters.AddWithValue("@CM_PRECIO_PRODUCTO_UNIDAD", producto.CM_PRECIO_PRODUCTO_UNIDAD);
+                sqlCommand.Parameters.AddWithValue("@COM_ID", PRODUCTO.COM_ID);
+                sqlCommand.Parameters.AddWithValue("@PRO_ID", PRODUCTO.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", PRODUCTO.COM_PRO_CANTIDAD);
+                sqlCommand.Parameters.AddWithValue("@CM_PRECIO_PRODUCTO_UNIDAD", PRODUCTO.CM_PRECIO_PRODUCTO_UNIDAD);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();
@@ -74,7 +74,6 @@ namespace TiendaVirtual.Controllers
         [HttpDelete]
         public IHttpActionResult PublicDelete(int id)
         {
-            return Ok("Si");
             if (id == 0) { return BadRequest(); }
             if (PrivateDelete(id)) { return Ok(); }
             else { return InternalServerError(); }
@@ -94,21 +93,21 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult PublicUpdate(Producto_Compra producto)
+        public IHttpActionResult PublicUpdate(PRODUCTO_COMPRA PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateUpdate(producto)) { return Ok(); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateUpdate(PRODUCTO)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        public bool PrivateUpdate(Producto_Compra producto)
+        public bool PrivateUpdate(PRODUCTO_COMPRA PRODUCTO)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO_COMPRA SET COM_ID=@COM_ID,PRO_ID=@PRO_ID,COM_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE CM_ID=@ID;", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ID", producto.CM_ID);
-                sqlCommand.Parameters.AddWithValue("@COM_ID", producto.COM_ID);
-                sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.COM_PRO_CANTIDAD);
+                sqlCommand.Parameters.AddWithValue("@ID", PRODUCTO.CM_ID);
+                sqlCommand.Parameters.AddWithValue("@COM_ID", PRODUCTO.COM_ID);
+                sqlCommand.Parameters.AddWithValue("@PRO_ID", PRODUCTO.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", PRODUCTO.COM_PRO_CANTIDAD);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();

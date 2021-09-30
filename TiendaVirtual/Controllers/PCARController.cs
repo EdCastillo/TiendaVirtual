@@ -20,12 +20,12 @@ namespace TiendaVirtual.Controllers
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"SELECT PRO_ID,CAR_PRO_CANTIDAD,PCR_ID FROM PRODUCTO_CARRITO WHERE US_ID=@ID;", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", id);
-                    List<Producto_Carrito> productos = new List<Producto_Carrito>();
+                    List<PRODUCTO_CARRITO> productos = new List<PRODUCTO_CARRITO>();
                     sqlConnection.Open();
                     SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
                     while (sqlDataReader.Read())
                     {
-                        productos.Add(new Producto_Carrito
+                        productos.Add(new PRODUCTO_CARRITO
                         {
                             PRO_ID = sqlDataReader.GetInt32(0),
                             CAR_PRO_CANTIDAD = sqlDataReader.GetInt32(1),
@@ -44,26 +44,26 @@ namespace TiendaVirtual.Controllers
         }
         [HttpPost]
         [Route("insertar")]
-        public IHttpActionResult PublicInsert(Producto_Carrito producto)
+        public IHttpActionResult PublicInsert(PRODUCTO_CARRITO PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateInsert(producto)) {
-                producto.PCR_ID = getPCRByParameters(producto.US_ID, producto.PRO_ID);
-                return Ok(producto); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateInsert(PRODUCTO)) {
+                PRODUCTO.PCR_ID = getPCRByParameters(PRODUCTO.US_ID, PRODUCTO.PRO_ID);
+                return Ok(PRODUCTO); }
             else { return InternalServerError(); }
         }
-        private bool PrivateInsert(Producto_Carrito producto)
+        private bool PrivateInsert(PRODUCTO_CARRITO PRODUCTO)
         {
-            Producto_Carrito car=new Producto_Carrito();
+            PRODUCTO_CARRITO car=new PRODUCTO_CARRITO();
             car.PCR_ID = 0;
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                 SqlCommand sqlCommand = new SqlCommand(@"SELECT PCR_ID,US_ID,PRO_ID FROM PRODUCTO_CARRITO WHERE PRO_ID=@PRO_ID AND US_ID=@US_ID", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
+                sqlCommand.Parameters.AddWithValue("@PRO_ID", PRODUCTO.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@US_ID", PRODUCTO.US_ID);
                 sqlConnection.Open();
                 SqlDataReader reader = sqlCommand.ExecuteReader();
                 while (reader.Read()) {
-                    car = new Producto_Carrito {US_ID=reader.GetInt32(1),PCR_ID=reader.GetInt32(0),PRO_ID=reader.GetInt32(2) };
+                    car = new PRODUCTO_CARRITO {US_ID=reader.GetInt32(1),PCR_ID=reader.GetInt32(0),PRO_ID=reader.GetInt32(2) };
                 }
                 sqlConnection.Close();
             }
@@ -72,9 +72,9 @@ namespace TiendaVirtual.Controllers
                 using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO PRODUCTO_CARRITO(PRO_ID,CAR_PRO_CANTIDAD,US_ID) VALUES(@PRO_ID,@COM_PRO_CANTIDAD,@US_ID);", sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("@US_ID", producto.US_ID);
-                    sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
-                    sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.CAR_PRO_CANTIDAD);
+                    sqlCommand.Parameters.AddWithValue("@US_ID", PRODUCTO.US_ID);
+                    sqlCommand.Parameters.AddWithValue("@PRO_ID", PRODUCTO.PRO_ID);
+                    sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", PRODUCTO.CAR_PRO_CANTIDAD);
                     sqlConnection.Open();
                     int filasAfectadas = sqlCommand.ExecuteNonQuery();
                     sqlConnection.Close();
@@ -86,7 +86,7 @@ namespace TiendaVirtual.Controllers
                 using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection())) {
                     SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO_CARRITO SET CAR_PRO_CANTIDAD=@CANTIDAD WHERE PCR_ID=@ID", sqlConnection);
                     sqlCommand.Parameters.AddWithValue("@ID", car.PCR_ID);
-                    sqlCommand.Parameters.AddWithValue("@CANTIDAD", producto.CAR_PRO_CANTIDAD);
+                    sqlCommand.Parameters.AddWithValue("@CANTIDAD", PRODUCTO.CAR_PRO_CANTIDAD);
                     sqlConnection.Open();
                     int filasAfectadas = sqlCommand.ExecuteNonQuery();
                     sqlConnection.Close();
@@ -164,7 +164,7 @@ namespace TiendaVirtual.Controllers
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"DELETE Producto_Carrito WHERE PCR_ID=@ID;", sqlConnection);
+                SqlCommand sqlCommand = new SqlCommand(@"DELETE PRODUCTO_CARRITO WHERE PCR_ID=@ID;", sqlConnection);
                 sqlCommand.Parameters.AddWithValue("@ID", id);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
@@ -175,20 +175,20 @@ namespace TiendaVirtual.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult PublicUpdate(Producto_Carrito producto)
+        public IHttpActionResult PublicUpdate(PRODUCTO_CARRITO PRODUCTO)
         {
-            if (producto == null) { return BadRequest(); }
-            if (PrivateUpdate(producto)) { return Ok(); }
+            if (PRODUCTO == null) { return BadRequest(); }
+            if (PrivateUpdate(PRODUCTO)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        public bool PrivateUpdate(Producto_Carrito producto)
+        public bool PrivateUpdate(PRODUCTO_CARRITO PRODUCTO)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
-                SqlCommand sqlCommand = new SqlCommand(@"UPDATE Producto_Carrito SET PRO_ID=@PRO_ID,CAR_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE PCR_ID=@ID;", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@ID", producto.PCR_ID);
-                sqlCommand.Parameters.AddWithValue("@PRO_ID", producto.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", producto.CAR_PRO_CANTIDAD);
+                SqlCommand sqlCommand = new SqlCommand(@"UPDATE PRODUCTO_CARRITO SET PRO_ID=@PRO_ID,CAR_PRO_CANTIDAD=@COM_PRO_CANTIDAD WHERE PCR_ID=@ID;", sqlConnection);
+                sqlCommand.Parameters.AddWithValue("@ID", PRODUCTO.PCR_ID);
+                sqlCommand.Parameters.AddWithValue("@PRO_ID", PRODUCTO.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@COM_PRO_CANTIDAD", PRODUCTO.CAR_PRO_CANTIDAD);
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();
                 sqlConnection.Close();

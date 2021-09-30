@@ -12,24 +12,20 @@ namespace TiendaVirtual.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class USUARIO
+    public partial class TIENDA
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public USUARIO()
+        public TIENDA()
         {
-            this.COMPRA = new HashSet<COMPRA>();
-            this.PRODUCTO_CARRITO = new HashSet<PRODUCTO_CARRITO>();
+            this.PRODUCTO = new HashSet<PRODUCTO>();
         }
     
-        public int US_ID { get; set; }
-        public string US_NOMBRE { get; set; }
-        public string US_CORREO { get; set; }
-        public string US_USUARIO { get; set; }
-        public string US_CONTRASENA { get; set; }
-        public string token { get; set; }
+        public int TI_ID { get; set; }
+        public string Nombre { get; set; }
+        public string DireccionFisica { get; set; }
+        public string Descripcion { get; set; }
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<COMPRA> COMPRA { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PRODUCTO_CARRITO> PRODUCTO_CARRITO { get; set; }
+        public virtual ICollection<PRODUCTO> PRODUCTO { get; set; }
     }
 }

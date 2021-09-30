@@ -12,12 +12,10 @@ namespace TiendaVirtual.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class IMAGEN
+    public partial class ESTADO
     {
-        public int IMG_ID { get; set; }
-        public int PRO_ID { get; set; }
-        public string IMG_NOMBRE { get; set; }
-        public string IMG_FORMATO { get; set; }
-        public byte[] IMG_FILE { get; set; }
+        public int ES_ID { get; set; }
+        public string ES_NOMBRE { get; set; }
+        public string ES_DESCRIPCION { get; set; }
     }
 }

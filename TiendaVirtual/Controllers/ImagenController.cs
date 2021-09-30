@@ -5,25 +5,25 @@ using TiendaVirtual.Models;
 
 namespace TiendaVirtual.Controllers
 {
-    [RoutePrefix("api/imagen")]
+    [RoutePrefix("api/IMAGEN")]
     [AllowAnonymous]
     public class ImagenController : ApiController
     {
         [HttpPost]
-        public IHttpActionResult PublicInsert(Imagen imagen)
+        public IHttpActionResult PublicInsert(IMAGEN IMAGEN)
         {
-            if (imagen == null) { return BadRequest(); }
-            if (PrivateInsert(imagen)) { return Ok(); }
+            if (IMAGEN == null) { return BadRequest(); }
+            if (PrivateInsert(IMAGEN)) { return Ok(); }
             else { return InternalServerError(); }
         }
-        private bool PrivateInsert(Imagen imagen)
+        private bool PrivateInsert(IMAGEN IMAGEN)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
                 SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO IMAGEN(PRO_ID,IMG_NOMBRE,IMG_FORMATO,IMG_FILE) VALUES(@PRO_ID,@IMG_NOMBRE,@IMG_FORMATO,@IMG_FILE);", sqlConnection);
-                sqlCommand.Parameters.AddWithValue("@PRO_ID", imagen.PRO_ID);
-                sqlCommand.Parameters.AddWithValue("@IMG_NOMBRE", imagen.IMG_NOMBRE);
-                sqlCommand.Parameters.AddWithValue("@IMG_FORMATO", imagen.IMG_FORMATO);
+                sqlCommand.Parameters.AddWithValue("@PRO_ID", IMAGEN.PRO_ID);
+                sqlCommand.Parameters.AddWithValue("@IMG_NOMBRE", IMAGEN.IMG_NOMBRE);
+                sqlCommand.Parameters.AddWithValue("@IMG_FORMATO", IMAGEN.IMG_FORMATO);
                 sqlCommand.Parameters.AddWithValue("@IMG_FILE", "");
                 sqlConnection.Open();
                 int filasAfectadas = sqlCommand.ExecuteNonQuery();

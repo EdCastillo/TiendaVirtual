@@ -1,5 +1,6 @@
 ﻿using System.Web.Http;
 using TiendaVirtual.Controllers;
+using TiendaVirtual.Models;
 
 namespace TiendaVirtual
 {
@@ -8,7 +9,7 @@ namespace TiendaVirtual
         public static void Register(HttpConfiguration config)
         {
             // Configuración y servicios de API web
-
+            TiendaVirtualEntities db = new TiendaVirtualEntities();
             // Rutas de API web
             config.MapHttpAttributeRoutes();
             config.MessageHandlers.Add(new TokenValidationHandler());

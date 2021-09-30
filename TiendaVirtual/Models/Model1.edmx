@@ -1,0 +1,544 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="TiendaVirtualModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="COMPRA">
+          <Key>
+            <PropertyRef Name="COM_ID" />
+          </Key>
+          <Property Name="COM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COM_FECHA_COMPRA" Type="datetime" Nullable="false" />
+          <Property Name="US_ID" Type="int" Nullable="false" />
+          <Property Name="COM_LUGAR_DE_ENVIO" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="PayPal_Token" Type="varchar" MaxLength="75" />
+          <Property Name="PayPal_PayerID" Type="varchar" MaxLength="75" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ES_ID" />
+          </Key>
+          <Property Name="ES_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ES_NOMBRE" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="ES_DESCRIPCION" Type="varchar" MaxLength="150" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IMAGEN">
+          <Key>
+            <PropertyRef Name="IMG_ID" />
+          </Key>
+          <Property Name="IMG_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRO_ID" Type="int" Nullable="false" />
+          <Property Name="IMG_NOMBRE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="IMG_FORMATO" Type="varchar" MaxLength="5" Nullable="false" />
+          <Property Name="IMG_FILE" Type="varbinary(max)" />
+        </EntityType>
+        <EntityType Name="PRODUCTO">
+          <Key>
+            <PropertyRef Name="PRO_ID" />
+          </Key>
+          <Property Name="PRO_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="PRO_NOMBRE" Type="varchar" MaxLength="20" Nullable="false" />
+          <Property Name="PRO_MARCA" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="PRO_STOCK" Type="int" Nullable="false" />
+          <Property Name="PRO_PRECIO" Type="decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="PRO_DESCRIPCION" Type="varchar" MaxLength="75" Nullable="false" />
+          <Property Name="TI_ID" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_CARRITO">
+          <Key>
+            <PropertyRef Name="PCR_ID" />
+          </Key>
+          <Property Name="PCR_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="US_ID" Type="int" Nullable="false" />
+          <Property Name="PRO_ID" Type="int" Nullable="false" />
+          <Property Name="CAR_PRO_CANTIDAD" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_COMPRA">
+          <Key>
+            <PropertyRef Name="CM_ID" />
+          </Key>
+          <Property Name="CM_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="COM_ID" Type="int" Nullable="false" />
+          <Property Name="PRO_ID" Type="int" Nullable="false" />
+          <Property Name="COM_PRO_CANTIDAD" Type="int" Nullable="false" />
+          <Property Name="CM_PRECIO_PRODUCTO_UNIDAD" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="TIENDA">
+          <Key>
+            <PropertyRef Name="TI_ID" />
+          </Key>
+          <Property Name="TI_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="DireccionFisica" Type="varchar" MaxLength="150" Nullable="false" />
+          <Property Name="Descripcion" Type="varchar" MaxLength="200" Nullable="false" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="US_ID" />
+          </Key>
+          <Property Name="US_ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="US_NOMBRE" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="US_CORREO" Type="varchar" MaxLength="30" Nullable="false" />
+          <Property Name="US_USUARIO" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="US_CONTRASENA" Type="varchar" MaxLength="20" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_COMPRA_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="COMPRA" Type="Self.COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="US_ID" />
+            </Principal>
+            <Dependent Role="COMPRA">
+              <PropertyRef Name="US_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IMAGEN_PRODUCTO">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="IMAGEN" Type="Self.IMAGEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="IMAGEN">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_CARRITO_PRODUCTO">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="PRODUCTO_CARRITO" Type="Self.PRODUCTO_CARRITO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_CARRITO">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_CARRITO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="PRODUCTO_CARRITO" Type="Self.PRODUCTO_CARRITO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="US_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_CARRITO">
+              <PropertyRef Name="US_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_COMPRA_COMPRA">
+          <End Role="COMPRA" Type="Self.COMPRA" Multiplicity="1" />
+          <End Role="PRODUCTO_COMPRA" Type="Self.PRODUCTO_COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMPRA">
+              <PropertyRef Name="COM_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_COMPRA">
+              <PropertyRef Name="COM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_COMPRA_PRODUCTO1">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="PRODUCTO_COMPRA" Type="Self.PRODUCTO_COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_COMPRA">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_TIENDA">
+          <End Role="TIENDA" Type="Self.TIENDA" Multiplicity="1" />
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIENDA">
+              <PropertyRef Name="TI_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO">
+              <PropertyRef Name="TI_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TiendaVirtualModelStoreContainer">
+          <EntitySet Name="COMPRA" EntityType="Self.COMPRA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ESTADO" EntityType="Self.ESTADO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="IMAGEN" EntityType="Self.IMAGEN" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTO" EntityType="Self.PRODUCTO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTO_CARRITO" EntityType="Self.PRODUCTO_CARRITO" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PRODUCTO_COMPRA" EntityType="Self.PRODUCTO_COMPRA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TIENDA" EntityType="Self.TIENDA" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_COMPRA_USUARIO" Association="Self.FK_COMPRA_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="COMPRA" EntitySet="COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IMAGEN_PRODUCTO" Association="Self.FK_IMAGEN_PRODUCTO">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="IMAGEN" EntitySet="IMAGEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_CARRITO_PRODUCTO" Association="Self.FK_PRODUCTO_CARRITO_PRODUCTO">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="PRODUCTO_CARRITO" EntitySet="PRODUCTO_CARRITO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_CARRITO_USUARIO" Association="Self.FK_PRODUCTO_CARRITO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="PRODUCTO_CARRITO" EntitySet="PRODUCTO_CARRITO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_COMPRA_COMPRA" Association="Self.FK_PRODUCTO_COMPRA_COMPRA">
+            <End Role="COMPRA" EntitySet="COMPRA" />
+            <End Role="PRODUCTO_COMPRA" EntitySet="PRODUCTO_COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_COMPRA_PRODUCTO1" Association="Self.FK_PRODUCTO_COMPRA_PRODUCTO1">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="PRODUCTO_COMPRA" EntitySet="PRODUCTO_COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_TIENDA" Association="Self.FK_PRODUCTO_TIENDA">
+            <End Role="TIENDA" EntitySet="TIENDA" />
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="TiendaVirtualModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="COMPRA">
+          <Key>
+            <PropertyRef Name="COM_ID" />
+          </Key>
+          <Property Name="COM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COM_FECHA_COMPRA" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="US_ID" Type="Int32" Nullable="false" />
+          <Property Name="COM_LUGAR_DE_ENVIO" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PayPal_Token" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <Property Name="PayPal_PayerID" Type="String" MaxLength="75" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_COMPRA_USUARIO" FromRole="COMPRA" ToRole="USUARIO" />
+          <NavigationProperty Name="PRODUCTO_COMPRA" Relationship="Self.FK_PRODUCTO_COMPRA_COMPRA" FromRole="COMPRA" ToRole="PRODUCTO_COMPRA" />
+        </EntityType>
+        <EntityType Name="ESTADO">
+          <Key>
+            <PropertyRef Name="ES_ID" />
+          </Key>
+          <Property Name="ES_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ES_NOMBRE" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ES_DESCRIPCION" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="IMAGEN">
+          <Key>
+            <PropertyRef Name="IMG_ID" />
+          </Key>
+          <Property Name="IMG_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRO_ID" Type="Int32" Nullable="false" />
+          <Property Name="IMG_NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMG_FORMATO" Type="String" MaxLength="5" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="IMG_FILE" Type="Binary" MaxLength="Max" FixedLength="false" />
+          <NavigationProperty Name="PRODUCTO" Relationship="Self.FK_IMAGEN_PRODUCTO" FromRole="IMAGEN" ToRole="PRODUCTO" />
+        </EntityType>
+        <EntityType Name="PRODUCTO">
+          <Key>
+            <PropertyRef Name="PRO_ID" />
+          </Key>
+          <Property Name="PRO_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="PRO_NOMBRE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRO_MARCA" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="PRO_STOCK" Type="Int32" Nullable="false" />
+          <Property Name="PRO_PRECIO" Type="Decimal" Precision="18" Scale="3" Nullable="false" />
+          <Property Name="PRO_DESCRIPCION" Type="String" MaxLength="75" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="TI_ID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="IMAGEN" Relationship="Self.FK_IMAGEN_PRODUCTO" FromRole="PRODUCTO" ToRole="IMAGEN" />
+          <NavigationProperty Name="PRODUCTO_CARRITO" Relationship="Self.FK_PRODUCTO_CARRITO_PRODUCTO" FromRole="PRODUCTO" ToRole="PRODUCTO_CARRITO" />
+          <NavigationProperty Name="PRODUCTO_COMPRA" Relationship="Self.FK_PRODUCTO_COMPRA_PRODUCTO1" FromRole="PRODUCTO" ToRole="PRODUCTO_COMPRA" />
+          <NavigationProperty Name="TIENDA" Relationship="Self.FK_PRODUCTO_TIENDA" FromRole="PRODUCTO" ToRole="TIENDA" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_CARRITO">
+          <Key>
+            <PropertyRef Name="PCR_ID" />
+          </Key>
+          <Property Name="PCR_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="US_ID" Type="Int32" Nullable="false" />
+          <Property Name="PRO_ID" Type="Int32" Nullable="false" />
+          <Property Name="CAR_PRO_CANTIDAD" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="PRODUCTO" Relationship="Self.FK_PRODUCTO_CARRITO_PRODUCTO" FromRole="PRODUCTO_CARRITO" ToRole="PRODUCTO" />
+          <NavigationProperty Name="USUARIO" Relationship="Self.FK_PRODUCTO_CARRITO_USUARIO" FromRole="PRODUCTO_CARRITO" ToRole="USUARIO" />
+        </EntityType>
+        <EntityType Name="PRODUCTO_COMPRA">
+          <Key>
+            <PropertyRef Name="CM_ID" />
+          </Key>
+          <Property Name="CM_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="COM_ID" Type="Int32" Nullable="false" />
+          <Property Name="PRO_ID" Type="Int32" Nullable="false" />
+          <Property Name="COM_PRO_CANTIDAD" Type="Int32" Nullable="false" />
+          <Property Name="CM_PRECIO_PRODUCTO_UNIDAD" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="COMPRA" Relationship="Self.FK_PRODUCTO_COMPRA_COMPRA" FromRole="PRODUCTO_COMPRA" ToRole="COMPRA" />
+          <NavigationProperty Name="PRODUCTO" Relationship="Self.FK_PRODUCTO_COMPRA_PRODUCTO1" FromRole="PRODUCTO_COMPRA" ToRole="PRODUCTO" />
+        </EntityType>
+        <EntityType Name="TIENDA">
+          <Key>
+            <PropertyRef Name="TI_ID" />
+          </Key>
+          <Property Name="TI_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="DireccionFisica" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="Descripcion" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="PRODUCTO" Relationship="Self.FK_PRODUCTO_TIENDA" FromRole="TIENDA" ToRole="PRODUCTO" />
+        </EntityType>
+        <EntityType Name="USUARIO">
+          <Key>
+            <PropertyRef Name="US_ID" />
+          </Key>
+          <Property Name="US_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="US_NOMBRE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="US_CORREO" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="US_USUARIO" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="US_CONTRASENA" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="COMPRA" Relationship="Self.FK_COMPRA_USUARIO" FromRole="USUARIO" ToRole="COMPRA" />
+          <NavigationProperty Name="PRODUCTO_CARRITO" Relationship="Self.FK_PRODUCTO_CARRITO_USUARIO" FromRole="USUARIO" ToRole="PRODUCTO_CARRITO" />
+        </EntityType>
+        <Association Name="FK_COMPRA_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="COMPRA" Type="Self.COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="US_ID" />
+            </Principal>
+            <Dependent Role="COMPRA">
+              <PropertyRef Name="US_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_COMPRA_COMPRA">
+          <End Role="COMPRA" Type="Self.COMPRA" Multiplicity="1" />
+          <End Role="PRODUCTO_COMPRA" Type="Self.PRODUCTO_COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="COMPRA">
+              <PropertyRef Name="COM_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_COMPRA">
+              <PropertyRef Name="COM_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_IMAGEN_PRODUCTO">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="IMAGEN" Type="Self.IMAGEN" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="IMAGEN">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_CARRITO_PRODUCTO">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="PRODUCTO_CARRITO" Type="Self.PRODUCTO_CARRITO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_CARRITO">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_COMPRA_PRODUCTO1">
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="1" />
+          <End Role="PRODUCTO_COMPRA" Type="Self.PRODUCTO_COMPRA" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="PRODUCTO">
+              <PropertyRef Name="PRO_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_COMPRA">
+              <PropertyRef Name="PRO_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_TIENDA">
+          <End Role="TIENDA" Type="Self.TIENDA" Multiplicity="1" />
+          <End Role="PRODUCTO" Type="Self.PRODUCTO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="TIENDA">
+              <PropertyRef Name="TI_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO">
+              <PropertyRef Name="TI_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PRODUCTO_CARRITO_USUARIO">
+          <End Role="USUARIO" Type="Self.USUARIO" Multiplicity="1" />
+          <End Role="PRODUCTO_CARRITO" Type="Self.PRODUCTO_CARRITO" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="USUARIO">
+              <PropertyRef Name="US_ID" />
+            </Principal>
+            <Dependent Role="PRODUCTO_CARRITO">
+              <PropertyRef Name="US_ID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="TiendaVirtualEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="COMPRA" EntityType="Self.COMPRA" />
+          <EntitySet Name="ESTADO" EntityType="Self.ESTADO" />
+          <EntitySet Name="IMAGEN" EntityType="Self.IMAGEN" />
+          <EntitySet Name="PRODUCTO" EntityType="Self.PRODUCTO" />
+          <EntitySet Name="PRODUCTO_CARRITO" EntityType="Self.PRODUCTO_CARRITO" />
+          <EntitySet Name="PRODUCTO_COMPRA" EntityType="Self.PRODUCTO_COMPRA" />
+          <EntitySet Name="TIENDA" EntityType="Self.TIENDA" />
+          <EntitySet Name="USUARIO" EntityType="Self.USUARIO" />
+          <AssociationSet Name="FK_COMPRA_USUARIO" Association="Self.FK_COMPRA_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="COMPRA" EntitySet="COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_COMPRA_COMPRA" Association="Self.FK_PRODUCTO_COMPRA_COMPRA">
+            <End Role="COMPRA" EntitySet="COMPRA" />
+            <End Role="PRODUCTO_COMPRA" EntitySet="PRODUCTO_COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_IMAGEN_PRODUCTO" Association="Self.FK_IMAGEN_PRODUCTO">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="IMAGEN" EntitySet="IMAGEN" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_CARRITO_PRODUCTO" Association="Self.FK_PRODUCTO_CARRITO_PRODUCTO">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="PRODUCTO_CARRITO" EntitySet="PRODUCTO_CARRITO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_COMPRA_PRODUCTO1" Association="Self.FK_PRODUCTO_COMPRA_PRODUCTO1">
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+            <End Role="PRODUCTO_COMPRA" EntitySet="PRODUCTO_COMPRA" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_TIENDA" Association="Self.FK_PRODUCTO_TIENDA">
+            <End Role="TIENDA" EntitySet="TIENDA" />
+            <End Role="PRODUCTO" EntitySet="PRODUCTO" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PRODUCTO_CARRITO_USUARIO" Association="Self.FK_PRODUCTO_CARRITO_USUARIO">
+            <End Role="USUARIO" EntitySet="USUARIO" />
+            <End Role="PRODUCTO_CARRITO" EntitySet="PRODUCTO_CARRITO" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="TiendaVirtualModelStoreContainer" CdmEntityContainer="TiendaVirtualEntities">
+          <EntitySetMapping Name="COMPRA">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.COMPRA">
+              <MappingFragment StoreEntitySet="COMPRA">
+                <ScalarProperty Name="COM_ID" ColumnName="COM_ID" />
+                <ScalarProperty Name="COM_FECHA_COMPRA" ColumnName="COM_FECHA_COMPRA" />
+                <ScalarProperty Name="US_ID" ColumnName="US_ID" />
+                <ScalarProperty Name="COM_LUGAR_DE_ENVIO" ColumnName="COM_LUGAR_DE_ENVIO" />
+                <ScalarProperty Name="PayPal_Token" ColumnName="PayPal_Token" />
+                <ScalarProperty Name="PayPal_PayerID" ColumnName="PayPal_PayerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ESTADO">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.ESTADO">
+              <MappingFragment StoreEntitySet="ESTADO">
+                <ScalarProperty Name="ES_ID" ColumnName="ES_ID" />
+                <ScalarProperty Name="ES_NOMBRE" ColumnName="ES_NOMBRE" />
+                <ScalarProperty Name="ES_DESCRIPCION" ColumnName="ES_DESCRIPCION" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="IMAGEN">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.IMAGEN">
+              <MappingFragment StoreEntitySet="IMAGEN">
+                <ScalarProperty Name="IMG_ID" ColumnName="IMG_ID" />
+                <ScalarProperty Name="PRO_ID" ColumnName="PRO_ID" />
+                <ScalarProperty Name="IMG_NOMBRE" ColumnName="IMG_NOMBRE" />
+                <ScalarProperty Name="IMG_FORMATO" ColumnName="IMG_FORMATO" />
+                <ScalarProperty Name="IMG_FILE" ColumnName="IMG_FILE" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTO">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.PRODUCTO">
+              <MappingFragment StoreEntitySet="PRODUCTO">
+                <ScalarProperty Name="PRO_ID" ColumnName="PRO_ID" />
+                <ScalarProperty Name="PRO_NOMBRE" ColumnName="PRO_NOMBRE" />
+                <ScalarProperty Name="PRO_MARCA" ColumnName="PRO_MARCA" />
+                <ScalarProperty Name="PRO_STOCK" ColumnName="PRO_STOCK" />
+                <ScalarProperty Name="PRO_PRECIO" ColumnName="PRO_PRECIO" />
+                <ScalarProperty Name="PRO_DESCRIPCION" ColumnName="PRO_DESCRIPCION" />
+                <ScalarProperty Name="TI_ID" ColumnName="TI_ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTO_CARRITO">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.PRODUCTO_CARRITO">
+              <MappingFragment StoreEntitySet="PRODUCTO_CARRITO">
+                <ScalarProperty Name="PCR_ID" ColumnName="PCR_ID" />
+                <ScalarProperty Name="US_ID" ColumnName="US_ID" />
+                <ScalarProperty Name="PRO_ID" ColumnName="PRO_ID" />
+                <ScalarProperty Name="CAR_PRO_CANTIDAD" ColumnName="CAR_PRO_CANTIDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PRODUCTO_COMPRA">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.PRODUCTO_COMPRA">
+              <MappingFragment StoreEntitySet="PRODUCTO_COMPRA">
+                <ScalarProperty Name="CM_ID" ColumnName="CM_ID" />
+                <ScalarProperty Name="COM_ID" ColumnName="COM_ID" />
+                <ScalarProperty Name="PRO_ID" ColumnName="PRO_ID" />
+                <ScalarProperty Name="COM_PRO_CANTIDAD" ColumnName="COM_PRO_CANTIDAD" />
+                <ScalarProperty Name="CM_PRECIO_PRODUCTO_UNIDAD" ColumnName="CM_PRECIO_PRODUCTO_UNIDAD" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TIENDA">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.TIENDA">
+              <MappingFragment StoreEntitySet="TIENDA">
+                <ScalarProperty Name="TI_ID" ColumnName="TI_ID" />
+                <ScalarProperty Name="Nombre" ColumnName="Nombre" />
+                <ScalarProperty Name="DireccionFisica" ColumnName="DireccionFisica" />
+                <ScalarProperty Name="Descripcion" ColumnName="Descripcion" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="USUARIO">
+            <EntityTypeMapping TypeName="TiendaVirtualModel.USUARIO">
+              <MappingFragment StoreEntitySet="USUARIO">
+                <ScalarProperty Name="US_ID" ColumnName="US_ID" />
+                <ScalarProperty Name="US_NOMBRE" ColumnName="US_NOMBRE" />
+                <ScalarProperty Name="US_CORREO" ColumnName="US_CORREO" />
+                <ScalarProperty Name="US_USUARIO" ColumnName="US_USUARIO" />
+                <ScalarProperty Name="US_CONTRASENA" ColumnName="US_CONTRASENA" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

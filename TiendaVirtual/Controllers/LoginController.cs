@@ -30,9 +30,9 @@ namespace TiendaVirtual.Controllers
                 if (login.Password.Equals(GetUser(login).US_CONTRASENA))
                 {
                     var token = TokenGenerator.GenerateTokenJwt(login.Username);
-                    Usuario usuario = GetUserByID(GetUser(login).US_ID);
-                    usuario.token = token;
-                    return Ok(usuario);
+                    USUARIO USUARIO = GetUserByID(GetUser(login).US_ID);
+                    USUARIO.token = token;
+                    return Ok(USUARIO);
                 }
                 else { return Unauthorized(); }
             }
@@ -41,7 +41,7 @@ namespace TiendaVirtual.Controllers
                 return BadRequest();
             }
         }
-        private Usuario GetUser(LoginRequest login)
+        private USUARIO GetUser(LoginRequest login)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
@@ -49,42 +49,42 @@ namespace TiendaVirtual.Controllers
                 sqlCommand.Parameters.AddWithValue("@USERNAME", login.Username);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                Usuario usuario = new Usuario();
+                USUARIO USUARIO = new USUARIO();
                 while (sqlDataReader.Read())
                 {
-                    usuario = new Usuario { US_USUARIO = sqlDataReader.GetString(0), US_CONTRASENA = sqlDataReader.GetString(1), US_ID = sqlDataReader.GetInt32(2) };
+                    USUARIO = new USUARIO { US_USUARIO = sqlDataReader.GetString(0), US_CONTRASENA = sqlDataReader.GetString(1), US_ID = sqlDataReader.GetInt32(2) };
                 }
                 sqlConnection.Close();
-                return usuario;
+                return USUARIO;
             }
 
         }
         [HttpPost]
         [Route("ingresar")]
-        public IHttpActionResult NewUser(Usuario usuario)
+        public IHttpActionResult NewUser(USUARIO USUARIO)
         {
-            if (usuario == null) { return BadRequest(); }
+            if (USUARIO == null) { return BadRequest(); }
             try
             {
                 //Validar inexistencia de username
-                Usuario user = GetUser(new LoginRequest { Username = usuario.US_USUARIO });
+                USUARIO user = GetUser(new LoginRequest { Username = USUARIO.US_USUARIO });
                 if (!(string.IsNullOrEmpty(user.US_USUARIO)))
                 {
-                    return BadRequest("Este nombre de usuario ya está en uso.");
+                    return BadRequest("Este nombre de USUARIO ya está en uso.");
                 }
                 using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
                 {
                     SqlCommand sqlCommand = new SqlCommand(@"INSERT INTO USUARIO(US_NOMBRE,US_CORREO,US_USUARIO,US_CONTRASENA) VALUES(@US_NOMBRE,@US_CORREO,@US_USUARIO,@US_CONTRASENA);", sqlConnection);
-                    sqlCommand.Parameters.AddWithValue("@US_NOMBRE", usuario.US_NOMBRE);
-                    sqlCommand.Parameters.AddWithValue("@US_CORREO", usuario.US_CORREO);
-                    sqlCommand.Parameters.AddWithValue("@US_USUARIO", usuario.US_USUARIO);
-                    sqlCommand.Parameters.AddWithValue("@US_CONTRASENA", usuario.US_CONTRASENA);
+                    sqlCommand.Parameters.AddWithValue("@US_NOMBRE", USUARIO.US_NOMBRE);
+                    sqlCommand.Parameters.AddWithValue("@US_CORREO", USUARIO.US_CORREO);
+                    sqlCommand.Parameters.AddWithValue("@US_USUARIO", USUARIO.US_USUARIO);
+                    sqlCommand.Parameters.AddWithValue("@US_CONTRASENA", USUARIO.US_CONTRASENA);
                     sqlConnection.Open();
                     int filasAfectadas = sqlCommand.ExecuteNonQuery();
                     sqlConnection.Close();
                     if (filasAfectadas > 0)
                     {
-                        return Ok(usuario);
+                        return Ok(USUARIO);
                     }
                     else { return InternalServerError(); }
                 }
@@ -95,7 +95,7 @@ namespace TiendaVirtual.Controllers
             }
         }
 
-        private Usuario GetUserByID(int id)
+        private USUARIO GetUserByID(int id)
         {
             using (SqlConnection sqlConnection = new SqlConnection(Utilities.GetConnection()))
             {
@@ -103,13 +103,13 @@ namespace TiendaVirtual.Controllers
                 sqlCommand.Parameters.AddWithValue("@ID", id);
                 sqlConnection.Open();
                 SqlDataReader sqlDataReader = sqlCommand.ExecuteReader();
-                Usuario usuario = new Usuario();
+                USUARIO USUARIO = new USUARIO();
                 while (sqlDataReader.Read())
                 {
-                    usuario = new Usuario { US_ID = sqlDataReader.GetInt32(0), US_NOMBRE = sqlDataReader.GetString(1), US_CORREO = sqlDataReader.GetString(2), US_USUARIO = sqlDataReader.GetString(3) };
+                    USUARIO = new USUARIO { US_ID = sqlDataReader.GetInt32(0), US_NOMBRE = sqlDataReader.GetString(1), US_CORREO = sqlDataReader.GetString(2), US_USUARIO = sqlDataReader.GetString(3) };
                 }
                 sqlConnection.Close();
-                return usuario;
+                return USUARIO;
 
             }
         }
